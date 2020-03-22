@@ -3,12 +3,10 @@ package wang.miansen.printer.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import wang.miansen.printer.core.builder.TypeMappingBuilder;
-import wang.miansen.printer.core.converters.ConverterContainer;
+import wang.miansen.printer.core.builder.ClassMapBuilder;
 import wang.miansen.printer.core.map.ClassMap;
 import wang.miansen.printer.core.map.FieldMap;
 import wang.miansen.printer.core.metadata.PrinterClass;
-import wang.miansen.printer.core.metadata.PrinterField;
 
 /**
  * @author miansen.wang
@@ -30,7 +28,7 @@ public class PrinterBeanMapperBuilder {
 		return new PrinterBeanMapperBuilder();
 	}
 
-	public PrinterBeanMapperBuilder mapping(Class<?> typeA, Class<?> typeB) {
+	public ClassMapBuilder mapping(Class<?> typeA, Class<?> typeB) {
 		fieldMaps = new ArrayList<>();
 		classMap = new ClassMap();
 		PrinterClass a = new PrinterClass(typeA);
@@ -39,24 +37,11 @@ public class PrinterBeanMapperBuilder {
 		classMap.setDestClass(b);
 		classMap.setFieldMaps(fieldMaps);
 		mappingContext.addClassMap(classMap);
-		return this;
-	}
-
-	public PrinterBeanMapperBuilder fields(String a, String b) {
-		PrinterField printerFieldA = new PrinterField();
-		PrinterField printerFieldB = new PrinterField();
-		printerFieldA.setName(a);
-		printerFieldB.setName(b);
-		FieldMap fieldMap = new FieldMap();
-		fieldMap.setSrcField(printerFieldA);
-		fieldMap.setDestField(printerFieldB);
-		fieldMaps.add(fieldMap);
-		return this;
+		return new ClassMapBuilder(fieldMaps, this);
 	}
 
 	public PrinterBeanMapper build() {
 		return new PrinterBeanMapper(mappingContext);
-
 	}
 
 }

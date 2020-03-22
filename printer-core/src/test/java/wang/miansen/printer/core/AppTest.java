@@ -14,8 +14,10 @@ public class AppTest {
 								.mapping(Student.class, StudentDTO.class)
 								.fields("name", "name")
 								.fields("age", "age")
+								.ok()
 								.mapping(Student.class, StudentDTO.class)
 								.fields("addr", "addr")
+								.ok()
 								.build();
 	}
 }
