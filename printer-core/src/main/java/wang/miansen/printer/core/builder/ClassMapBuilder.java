@@ -27,8 +27,8 @@ public final class ClassMapBuilder {
 		printerFieldA.setName(a);
 		printerFieldB.setName(b);
 		FieldMap fieldMap = new FieldMap();
-		fieldMap.setSrcField(printerFieldA);
-		fieldMap.setDestField(printerFieldB);
+		fieldMap.setSourceField(printerFieldA);
+		fieldMap.setTargetField(printerFieldB);
 		fieldMaps.add(fieldMap);
 		return this;
 	}
@@ -39,6 +39,10 @@ public final class ClassMapBuilder {
 
 	public PrinterBeanMapperBuilder ok() {
 		return printerBeanMapperBuilder;
+	}
+	
+	public void addDefaultFieldMappings() {
+		
 	}
 	
 }

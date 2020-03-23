@@ -1,38 +1,39 @@
 package wang.miansen.printer.core.metadata;
 
+import java.lang.reflect.Method;
+
 /**
+ * 字段描述类
+ * 
  * @author miansen.wang
  * @date 2020-03-21
  */
 public class PrinterField {
 
-	private String type;
-
+	/**
+	 * 字段的名字
+	 */
 	private String name;
 
-	private String dateFormat;
+	/**
+	 * 字段的类型
+	 */
+	private Class<?> type;
 
-	private String theGetMethod;
-
-	private String theSetMethod;
-
-	private String key;
-
-	private String mapSetMethod;
-
-	private String mapGetMethod;
-
+	/**
+	 * 字段是否可读可写
+	 */
 	private Boolean accessible;
-
-	private String createMethod;
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
+	
+	/**
+	 * 字段的读方法
+	 */
+	private Method readMethod;
+	
+	/**
+	 * 字段的写方法
+	 */
+	private Method writeMethod;
 
 	public String getName() {
 		return name;
@@ -42,52 +43,12 @@ public class PrinterField {
 		this.name = name;
 	}
 
-	public String getDateFormat() {
-		return dateFormat;
+	public Class<?> getType() {
+		return type;
 	}
 
-	public void setDateFormat(String dateFormat) {
-		this.dateFormat = dateFormat;
-	}
-
-	public String getTheGetMethod() {
-		return theGetMethod;
-	}
-
-	public void setTheGetMethod(String theGetMethod) {
-		this.theGetMethod = theGetMethod;
-	}
-
-	public String getTheSetMethod() {
-		return theSetMethod;
-	}
-
-	public void setTheSetMethod(String theSetMethod) {
-		this.theSetMethod = theSetMethod;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public String getMapSetMethod() {
-		return mapSetMethod;
-	}
-
-	public void setMapSetMethod(String mapSetMethod) {
-		this.mapSetMethod = mapSetMethod;
-	}
-
-	public String getMapGetMethod() {
-		return mapGetMethod;
-	}
-
-	public void setMapGetMethod(String mapGetMethod) {
-		this.mapGetMethod = mapGetMethod;
+	public void setType(Class<?> type) {
+		this.type = type;
 	}
 
 	public Boolean getAccessible() {
@@ -98,20 +59,26 @@ public class PrinterField {
 		this.accessible = accessible;
 	}
 
-	public String getCreateMethod() {
-		return createMethod;
+	public Method getReadMethod() {
+		return readMethod;
 	}
 
-	public void setCreateMethod(String createMethod) {
-		this.createMethod = createMethod;
+	public void setReadMethod(Method readMethod) {
+		this.readMethod = readMethod;
+	}
+
+	public Method getWriteMethod() {
+		return writeMethod;
+	}
+
+	public void setWriteMethod(Method writeMethod) {
+		this.writeMethod = writeMethod;
 	}
 
 	@Override
 	public String toString() {
-		return "PrinterField [type=" + type + ", name=" + name + ", dateFormat=" + dateFormat + ", theGetMethod="
-				+ theGetMethod + ", theSetMethod=" + theSetMethod + ", key=" + key + ", mapSetMethod=" + mapSetMethod
-				+ ", mapGetMethod=" + mapGetMethod + ", accessible=" + accessible + ", createMethod=" + createMethod
-				+ "]";
+		return "PrinterField {name=" + name + ", type=" + type + ", accessible=" + accessible + ", readMethod="
+				+ readMethod + ", writeMethod=" + writeMethod + "}";
 	}
 
 }

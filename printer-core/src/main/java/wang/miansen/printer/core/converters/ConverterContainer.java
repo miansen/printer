@@ -8,8 +8,4 @@ import wang.miansen.printer.core.Converter;
  */
 public interface ConverterContainer {
 
-	void add(Converter<?, ?> converter);
-	
-	Converter<?, ?> get(Class<? extends Converter<?, ?>> converterClass);
-	
 }

@@ -3,6 +3,7 @@ package wang.miansen.printer.core.util;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @date 2019-12-29
  * @since 3.0
  */
-public final class ReflectionUtils {
+public abstract class ReflectionUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
 
@@ -69,9 +70,10 @@ public final class ReflectionUtils {
 			return Collections.emptyList();
 		}
 		// 如果 class 是代理对象，则需要获取原来的 class
-		/*if (AopUtils.isAopProxy(clazz) || AopUtils.isJdkDynamicProxy(clazz) || AopUtils.isCglibProxy(clazz)) {
-			clazz = AopUtils.getTargetClass(clazz);
-		}*/
+		/*
+		 * if (AopUtils.isAopProxy(clazz) || AopUtils.isJdkDynamicProxy(clazz) || AopUtils.isCglibProxy(clazz)) { clazz
+		 * = AopUtils.getTargetClass(clazz); }
+		 */
 		return Stream.of(clazz.getDeclaredFields()).filter(field -> {
 			// 排除被 static 修饰的字段（Field 的 getModifiers() 方法返回 int 类型值表示该字段的修饰符）
 			return !Modifier.isStatic(field.getModifiers());
@@ -154,8 +156,6 @@ public final class ReflectionUtils {
 	 * @throws Exception
 	 */
 	public static Object doExpression(String expression, Object object) throws Exception {
-		// Assert.notNull(expression, "Expression must not be null");
-		// Assert.notNull(object, "Object must not be null");
 		if (object == null) {
 			return object;
 		}
@@ -173,6 +173,29 @@ public final class ReflectionUtils {
 			}
 		}
 		return value;
+	}
+
+	/**
+	 * 执行某个方法
+	 * 
+	 * @param method 方法描述对象
+	 * @param obj 方法所属的目标对象
+	 * @param args 方法的参数
+	 * @return Object
+	 */
+	public static Object invoke(Method method, Object obj, Object[] args) {
+		Object result = null;
+		try {
+			method.setAccessible(true);
+			result = method.invoke(obj, args);
+		} catch (IllegalAccessException e) {
+			MappingUtils.throwMappingException(e);
+		} catch (IllegalArgumentException e) {
+			MappingUtils.throwMappingException(e);
+		} catch (InvocationTargetException e) {
+			MappingUtils.throwMappingException(e);
+		}
+		return result;
 	}
 
 }
