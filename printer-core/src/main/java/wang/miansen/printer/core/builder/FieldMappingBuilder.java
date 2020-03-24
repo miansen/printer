@@ -28,7 +28,7 @@ public class FieldMappingBuilder implements BeanMappingBuilder {
 
 	@Override
 	public void build() {
-		PrinterField sourceField = new PrinterField();
+		
 	}
 	
 }

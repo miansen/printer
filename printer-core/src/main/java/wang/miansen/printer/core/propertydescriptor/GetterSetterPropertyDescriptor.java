@@ -13,8 +13,8 @@ import wang.miansen.printer.core.util.ReflectionUtils;
  */
 public abstract class GetterSetterPropertyDescriptor extends AbstractPropertyDescriptor {
 
-	public GetterSetterPropertyDescriptor(Class<?> propertyType, String propertyName) {
-		super(propertyType, propertyName);
+	GetterSetterPropertyDescriptor(Class<?> clazz, String propertyName) {
+		super(clazz, propertyName);
 	}
 
 	/**
@@ -32,6 +32,22 @@ public abstract class GetterSetterPropertyDescriptor extends AbstractPropertyDes
 	 * @throws NoSuchMethodException
 	 */
 	protected abstract Method getWriteMethod() throws NoSuchMethodException;
+	
+	/**
+	 * 获取深度映射字段的 getter 方法
+	 * 
+	 * @return
+	 * @throws NoSuchMethodException
+	 */
+	protected abstract Method[] getDeepReadMethod() throws NoSuchMethodException;
+	
+	/**
+	 * 获取深度映射字段的 setter 方法
+	 * 
+	 * @return
+	 * @throws NoSuchMethodException
+	 */
+	protected abstract Method[] getDeepWriteMethod() throws NoSuchMethodException;
 
 	/**
 	 * 获取 setter 方法的参数类型
@@ -53,7 +69,7 @@ public abstract class GetterSetterPropertyDescriptor extends AbstractPropertyDes
 	 * @param bean 目标对象
 	 * @return Object
 	 */
-	protected Object getPropertyValue(Object bean) {
+	public Object getPropertyValue(Object bean) {
 		Object result = null;
 		// 看看是否为深度映射
 		if (MappingUtils.isDeepMapping(propertyName)) {
@@ -70,7 +86,7 @@ public abstract class GetterSetterPropertyDescriptor extends AbstractPropertyDes
 	 * @param bean 目标对象
 	 * @param value 要设置的值
 	 */
-	protected void setPropertyValue(Object bean, Object value) {
+	public void setPropertyValue(Object bean, Object value) {
 		// 看看是否为深度映射
 		if (MappingUtils.isDeepMapping(propertyName)) {
 			setDeepPropertyValue(bean, value);

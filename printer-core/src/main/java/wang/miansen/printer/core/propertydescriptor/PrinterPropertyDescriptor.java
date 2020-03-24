@@ -1,7 +1,5 @@
 package wang.miansen.printer.core.propertydescriptor;
 
-import wang.miansen.printer.core.map.FieldMap;
-
 /**
  * Printer 内部属性描述符接口。用于读取和写入目标对象上的实际字段映射值。
  * 
@@ -30,8 +28,7 @@ public interface PrinterPropertyDescriptor {
 	 * 
 	 * @param bean 目标对象
 	 * @param value 属性值
-	 * @param fieldMap 字段映射
 	 */
-	void setPropertyValue(Object bean, Object value, FieldMap fieldMap);
+	void setPropertyValue(Object bean, Object value);
 	
 }

@@ -6,13 +6,13 @@ package wang.miansen.printer.core.propertydescriptor;
  * @author miansen.wang
  * @date 2020-03-23
  */
-public abstract class AbstractPropertyDescriptor {
-
-	/**
-	 * 属性的类型
-	 */
-	protected final Class<?> propertyType;
+public abstract class AbstractPropertyDescriptor implements PrinterPropertyDescriptor {
 	
+	/**
+	 * 属性所属的类的类型
+	 */
+	protected final Class<?> clazz;
+
 	/**
 	 * 属性的名字
 	 */
@@ -24,8 +24,8 @@ public abstract class AbstractPropertyDescriptor {
      * @param clazz 属性的类型
      * @param propertyName 属性的名字
      */
-	public AbstractPropertyDescriptor(Class<?> propertyType, String propertyName) {
-		this.propertyType = propertyType;
+	AbstractPropertyDescriptor(Class<?> clazz, String propertyName) {
+		this.clazz = clazz;
 		this.propertyName = propertyName;
 	}
     

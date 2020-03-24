@@ -12,8 +12,8 @@ public final class PropertyDescriptorFactory {
 	 * 根据输入参数，返回一个合适的属性描述符
 	 * @return PrinterPropertyDescriptor
 	 */
-	public PrinterPropertyDescriptor getPropertyDescriptor(Class<?> clazz) {
-		return null;
+	public PrinterPropertyDescriptor getPropertyDescriptor(Class<?> clazz, String propertyName) {
+		return new JavaBeanPropertyDescriptor(clazz, propertyName);
 	}
 
 }

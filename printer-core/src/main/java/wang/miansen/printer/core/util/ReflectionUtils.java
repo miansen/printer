@@ -12,11 +12,15 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import wang.miansen.printer.core.entity.Dog;
+import wang.miansen.printer.core.entity.Student;
 
 /**
  * 反射工具类
@@ -118,7 +122,7 @@ public abstract class ReflectionUtils {
 	}
 
 	/**
-	 * 根据给定的表达式和对象，获取字段的值。支持 <b>"."</b> 操作符。使用例子如下：
+	 * 假如一个对象符合 Java Bean 定义的规范，则可以根据表达式返回一个值。支持 <b>"."</b> 操作符。使用例子如下：
 	 * <code>
 	 * 	<pre>
 	 * class Foo {
@@ -140,18 +144,21 @@ public abstract class ReflectionUtils {
 	 * 	}
 	 * }
 	 * public static void main(String[] args) {
-	 * 	String expression = "boo.name";
-	 * 	Foo foo = new Foo();
+	 * 
 	 * 	Boo boo = new Boo();
-	 * 	boo.setName("boo");
+	 * 	boo.setName("hello!");
+	 *  
+	 * 	Foo foo = new Foo();
 	 * 	foo.setBoo(boo);
-	 * 	doExpression(expression, foo);// return "boo"
+	 * 
+	 * 	// return "hello!"
+	 * 	Object result = doExpression("boo.name", foo);
 	 * }
 	 * 	</pre>
 	 * </code>
 	 * 
 	 * @param expression 表达式，支持 <b>"."</b> 操作符
-	 * @param object 表达式作用的对象
+	 * @param object 符合 Java Bean 定义的规范的对象
 	 * @return Object
 	 * @throws Exception
 	 */
@@ -198,4 +205,55 @@ public abstract class ReflectionUtils {
 		return result;
 	}
 
+	/**
+	 * 获取 PropertyDescriptor，支持深度匹配
+	 * 
+	 * @param clazz 类的 Class 对象
+	 * @param fieldName 字段的名字，支持 <b>"."</b> 操作符
+	 * @return
+	 */
+	public static PropertyDescriptor getPropertyDescriptor(Class<?> clazz, String fieldName) {
+		PropertyDescriptor propertyDescriptor = null;
+		if (MappingUtils.isDeepMapping(fieldName)) {
+			PropertyDescriptor[] propertyDescriptors = getDeepPropertyDescriptor(clazz, fieldName);
+			propertyDescriptor = propertyDescriptors[propertyDescriptors.length - 1];
+		} else {
+			try {
+				propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
+			} catch (IntrospectionException e) {
+				MappingUtils.throwMappingException(e);
+			}
+		}
+		return propertyDescriptor;
+	}
+
+	/**
+	 * 深度匹配所有的 PropertyDescriptor
+	 * 
+	 * @param parentClass 第一个 Class 对象
+	 * @param fieldName 字段的名字，必须要有 <b>"."</b> 操作符
+	 * @return
+	 */
+	public static PropertyDescriptor[] getDeepPropertyDescriptor(Class<?> parentClass, String fieldName) {
+		if (!MappingUtils.isDeepMapping(fieldName)) {
+			MappingUtils.throwMappingException("Field does not contain deep field delimitor");
+		}
+		StringTokenizer tokens = new StringTokenizer(fieldName, PrinterConstants.DEEP_FIELD_DELIMITER);
+		PropertyDescriptor[] propertyDescriptors = new PropertyDescriptor[tokens.countTokens()];
+		Class<?> latestClass = parentClass;
+		int index = 0;
+		while (tokens.hasMoreTokens()) {
+			String theFieldName = tokens.nextToken();
+			PropertyDescriptor propertyDescriptor = getPropertyDescriptor(latestClass, theFieldName);
+			if (propertyDescriptor == null) {
+				MappingUtils.throwMappingException("Exception occurred determining deep field hierarchy for Class --> "
+						+ parentClass.getName() + ", Field --> " + fieldName + ".  Unable to determine property descriptor for Class --> " 
+						+ latestClass.getName() + ", Field Name: " + theFieldName);
+			}
+			latestClass = propertyDescriptor.getPropertyType();
+			propertyDescriptors[index++] = propertyDescriptor;
+		}
+		return propertyDescriptors;
+	}
+	
 }
