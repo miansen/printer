@@ -6,31 +6,33 @@ import java.util.List;
 import wang.miansen.printer.core.metadata.PrinterClass;
 
 /**
+ * Class 映射类
+ * 
  * @author miansen.wang
  * @date 2020-03-21
  */
 public class ClassMap {
 
-	private PrinterClass srcClass;
+	private PrinterClass sourceClass;
 
-	private PrinterClass destClass;
+	private PrinterClass targetClass;
 
 	private List<FieldMap> fieldMaps = new ArrayList<>();
 
-	public PrinterClass getSrcClass() {
-		return srcClass;
+	public PrinterClass getSourceClass() {
+		return sourceClass;
 	}
 
-	public void setSrcClass(PrinterClass srcClass) {
-		this.srcClass = srcClass;
+	public void setSourceClass(PrinterClass sourceClass) {
+		this.sourceClass = sourceClass;
 	}
 
-	public PrinterClass getDestClass() {
-		return destClass;
+	public PrinterClass getTargetClass() {
+		return targetClass;
 	}
 
-	public void setDestClass(PrinterClass destClass) {
-		this.destClass = destClass;
+	public void setTargetClass(PrinterClass targetClass) {
+		this.targetClass = targetClass;
 	}
 
 	public List<FieldMap> getFieldMaps() {
@@ -43,7 +45,7 @@ public class ClassMap {
 
 	@Override
 	public String toString() {
-		return "ClassMap [srcClass=" + srcClass + ", destClass=" + destClass + ", fieldMaps=" + fieldMaps + "]";
+		return "ClassMap {sourceClass=" + sourceClass + ", targetClass=" + targetClass + "}";
 	}
 
 }

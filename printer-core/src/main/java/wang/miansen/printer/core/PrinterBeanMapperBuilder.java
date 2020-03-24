@@ -3,7 +3,9 @@ package wang.miansen.printer.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import wang.miansen.printer.core.builder.ClassMapBuilder;
+import wang.miansen.printer.core.builder.BeanMappingBuilder;
+import wang.miansen.printer.core.builder.ClassMappingBuilder;
+import wang.miansen.printer.core.builder.ClassMappingOption;
 import wang.miansen.printer.core.map.ClassMap;
 import wang.miansen.printer.core.map.FieldMap;
 import wang.miansen.printer.core.metadata.PrinterClass;
@@ -19,16 +21,19 @@ public class PrinterBeanMapperBuilder {
 	private List<FieldMap> fieldMaps;
 
 	private MappingContext mappingContext;
+	
+	private List<BeanMappingBuilder> classMappingBuilder;
 
 	private PrinterBeanMapperBuilder() {
 		mappingContext = new MappingContext();
+		classMappingBuilder = new ArrayList<>();
 	}
 
 	public static PrinterBeanMapperBuilder create() {
 		return new PrinterBeanMapperBuilder();
 	}
 
-	public ClassMapBuilder mapping(Class<?> typeA, Class<?> typeB) {
+	public ClassMappingBuilder mapping(Class<?> typeA, Class<?> typeB, ClassMappingOption... option) {
 		fieldMaps = new ArrayList<>();
 		classMap = new ClassMap();
 		PrinterClass a = new PrinterClass(typeA);
@@ -37,7 +42,7 @@ public class PrinterBeanMapperBuilder {
 		classMap.setDestClass(b);
 		classMap.setFieldMaps(fieldMaps);
 		mappingContext.addClassMap(classMap);
-		return new ClassMapBuilder(fieldMaps, this);
+		return new ClassMappingBuilder(classMap, this);
 	}
 
 	public PrinterBeanMapper build() {
