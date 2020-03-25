@@ -3,7 +3,7 @@ package wang.miansen.printer.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import wang.miansen.printer.core.map.ClassMap;
+import wang.miansen.printer.core.map.AbstractClassMap;
 
 /**
  * @author miansen.wang
@@ -11,17 +11,17 @@ import wang.miansen.printer.core.map.ClassMap;
  */
 public class MappingContext {
 
-	private List<ClassMap> classMaps = new ArrayList<>();
+	private List<AbstractClassMap> classMaps = new ArrayList<>();
 
-	public List<ClassMap> getClassMaps() {
+	public List<AbstractClassMap> getClassMaps() {
 		return classMaps;
 	}
 
-	public void setClassMaps(List<ClassMap> classMaps) {
+	public void setClassMaps(List<AbstractClassMap> classMaps) {
 		this.classMaps = classMaps;
 	}
 	
-	public void addClassMap(ClassMap classMap) {
+	public void addClassMap(AbstractClassMap classMap) {
 		this.classMaps.add(classMap);
 	}
 

@@ -2,8 +2,8 @@ package wang.miansen.printer.core.builder;
 
 import wang.miansen.printer.core.Configuration;
 import wang.miansen.printer.core.MappingContext;
-import wang.miansen.printer.core.map.ClassMap;
-import wang.miansen.printer.core.map.FieldMap;
+import wang.miansen.printer.core.map.AbstractClassMap;
+import wang.miansen.printer.core.map.AbstractFieldMap;
 import wang.miansen.printer.core.metadata.PrinterField;
 
 /**
@@ -12,7 +12,7 @@ import wang.miansen.printer.core.metadata.PrinterField;
  */
 public class FieldMappingBuilder implements BeanMappingBuilder {
 
-	private ClassMap classMap;
+	private AbstractClassMap classMap;
 	
 	private String source;
 	
@@ -20,7 +20,7 @@ public class FieldMappingBuilder implements BeanMappingBuilder {
 	
 	private Configuration classConfiguration;
 	
-	public FieldMappingBuilder(ClassMap classMap, String source, String target) {
+	public FieldMappingBuilder(AbstractClassMap classMap, String source, String target) {
 		this.classMap = classMap;
 		this.source = source;
 		this.target = target;

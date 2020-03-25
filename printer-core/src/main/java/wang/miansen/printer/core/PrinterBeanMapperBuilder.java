@@ -6,8 +6,8 @@ import java.util.List;
 import wang.miansen.printer.core.builder.BeanMappingBuilder;
 import wang.miansen.printer.core.builder.ClassMappingBuilder;
 import wang.miansen.printer.core.builder.ClassMappingOption;
-import wang.miansen.printer.core.map.ClassMap;
-import wang.miansen.printer.core.map.FieldMap;
+import wang.miansen.printer.core.map.AbstractClassMap;
+import wang.miansen.printer.core.map.AbstractFieldMap;
 import wang.miansen.printer.core.metadata.PrinterClass;
 
 /**
@@ -16,9 +16,9 @@ import wang.miansen.printer.core.metadata.PrinterClass;
  */
 public class PrinterBeanMapperBuilder {
 
-	private ClassMap classMap;
+	private AbstractClassMap classMap;
 
-	private List<FieldMap> fieldMaps;
+	private List<AbstractFieldMap> fieldMaps;
 
 	private MappingContext mappingContext;
 	
@@ -35,7 +35,7 @@ public class PrinterBeanMapperBuilder {
 
 	public ClassMappingBuilder mapping(Class<?> typeA, Class<?> typeB, ClassMappingOption... option) {
 		fieldMaps = new ArrayList<>();
-		classMap = new ClassMap();
+		classMap = new AbstractClassMap();
 		PrinterClass a = new PrinterClass(typeA);
 		PrinterClass b = new PrinterClass(typeB);
 		classMap.setSrcClass(a);

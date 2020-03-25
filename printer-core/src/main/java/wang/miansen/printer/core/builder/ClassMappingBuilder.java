@@ -1,13 +1,10 @@
 package wang.miansen.printer.core.builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import wang.miansen.printer.core.Configuration;
-import wang.miansen.printer.core.MappingContext;
 import wang.miansen.printer.core.PrinterBeanMapperBuilder;
-import wang.miansen.printer.core.map.ClassMap;
-import wang.miansen.printer.core.map.FieldMap;
-import wang.miansen.printer.core.metadata.PrinterField;
+import wang.miansen.printer.core.map.AbstractClassMap;
 
 /**
  * @author miansen.wang
@@ -15,21 +12,16 @@ import wang.miansen.printer.core.metadata.PrinterField;
  */
 public final class ClassMappingBuilder implements BeanMappingBuilder {
 
-	private List<FieldMap> fieldMaps;
+	private final PrinterBeanMapperBuilder printerBeanMapperBuilder;
+	
+	private final AbstractClassMap classMap;
+	
+	private final List<BeanMappingBuilder> fieldMappingBuilders;
 
-	private PrinterBeanMapperBuilder printerBeanMapperBuilder;
-	
-	private ClassMap classMap;
-	
-	private List<ClassMap> classMaps;
-	
-	private List<BeanMappingBuilder> fieldMappingBuilders;
-	
-	private Configuration classConfiguration;
-
-	public ClassMappingBuilder(ClassMap classMap, PrinterBeanMapperBuilder printerBeanMapperBuilder) {
+	public ClassMappingBuilder(AbstractClassMap classMap, PrinterBeanMapperBuilder printerBeanMapperBuilder) {
 		this.classMap = classMap;
 		this.printerBeanMapperBuilder = printerBeanMapperBuilder;
+		this.fieldMappingBuilders = new ArrayList<>();
 	}
 
 	public ClassMappingBuilder field(String source, String target, FieldMappingOption... fieldMappingOptions) {

@@ -1,9 +1,11 @@
 package wang.miansen.printer.core.metadata;
 
+import java.lang.reflect.Field;
+
 import wang.miansen.printer.core.propertydescriptor.PrinterPropertyDescriptor;
 
 /**
- * Printer 内部的字段描述类
+ * Printer 内部的字段描述类，相当于对 {@link Field} 进一步封装。
  * 
  * @author miansen.wang
  * @date 2020-03-21
@@ -30,6 +32,9 @@ public class PrinterField {
 	 */
 	private PrinterPropertyDescriptor printerPropertyDescriptor;
 
+	/**
+	 * 请使用 {@link PrinterFieldBuilder} 创建对象
+	 */
 	PrinterField() {
 
 	}
