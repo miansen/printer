@@ -1,7 +1,7 @@
 package wang.miansen.printer.core.metadata;
 
 /**
- * Printer 内部的 Class 描述类，相当于对 Class 的进一步封装。
+ * 用于描述映射类，相当于对 Class 的进一步封装。
  * 
  * @author miansen.wang
  * @date 2020-03-21
@@ -9,12 +9,12 @@ package wang.miansen.printer.core.metadata;
 public class PrinterClass {
 
 	/**
-	 * Class 的名字
+	 * 映射类的全限定名
 	 */
 	private String name;
 
 	/**
-	 * Class 对象
+	 * 映射类的 Class 对象
 	 */
 	private Class<?> clazz;
 
@@ -26,7 +26,7 @@ public class PrinterClass {
 	}
 
 	/**
-	 * 获取 Class 的名字
+	 * 获取映射类的全限定名
 	 * 
 	 * @return String
 	 */
@@ -35,16 +35,16 @@ public class PrinterClass {
 	}
 
 	/**
-	 * 设置 Class 的名字
+	 * 设置映射类的全限定名
 	 * 
-	 * @param name Class 的名字
+	 * @param name 类的全限定名
 	 */
 	void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * 获取 Class 对象
+	 * 获取映射类的 Class 对象
 	 * 
 	 * @return Class
 	 */
@@ -53,9 +53,9 @@ public class PrinterClass {
 	}
 
 	/**
-	 * 设置 Class 对象
+	 * 设置映射类的 Class 对象
 	 * 
-	 * @param clazz Class 对象
+	 * @param clazz 映射类的 Class 对象
 	 */
 	void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
@@ -63,7 +63,7 @@ public class PrinterClass {
 
 	@Override
 	public String toString() {
-		return "PrinterClass=" + clazz;
+		return "PrinterClass=" + name;
 	}
 
 }

@@ -1,5 +1,9 @@
 package wang.miansen.printer.core.map;
 
+import java.util.List;
+
+import wang.miansen.printer.core.metadata.PrinterClass;
+
 /**
  * 类映射关系接口
  * 
@@ -8,4 +12,10 @@ package wang.miansen.printer.core.map;
  */
 public interface ClassMap {
 
+	PrinterClass getSourceClass();
+	
+	PrinterClass getTargetClass();
+	
+	List<FieldMap> getFieldMaps();
+	
 }

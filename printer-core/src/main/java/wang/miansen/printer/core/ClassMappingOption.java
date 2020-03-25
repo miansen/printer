@@ -1,4 +1,6 @@
-package wang.miansen.printer.core.builder;
+package wang.miansen.printer.core;
+
+import wang.miansen.printer.core.builder.ClassMappingBuilder;
 
 /**
  * @author miansen.wang

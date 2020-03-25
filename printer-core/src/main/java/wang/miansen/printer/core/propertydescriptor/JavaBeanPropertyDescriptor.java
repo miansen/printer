@@ -83,7 +83,7 @@ public class JavaBeanPropertyDescriptor extends GetterSetterPropertyDescriptor {
 	@Override
 	public Class<?> getPropertyType() {
 		if (propertyType == null) {
-			propertyType = propertyDescriptor.getPropertyType();
+			propertyType = getPropertyDescriptor().getPropertyType();
 		}
 		return propertyType;
 	}

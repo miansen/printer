@@ -18,7 +18,7 @@ public class CustomClassMap extends AbstractClassMap {
 	 */
 	private Configuration classConfiguration;
 
-	public CustomClassMap(PrinterClass sourceClass, PrinterClass targetClass, List<AbstractFieldMap> fieldMaps) {
+	public CustomClassMap(PrinterClass sourceClass, PrinterClass targetClass, List<FieldMap> fieldMaps) {
 		super(sourceClass, targetClass, fieldMaps);
 	}
 

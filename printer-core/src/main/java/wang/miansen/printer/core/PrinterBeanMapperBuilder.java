@@ -5,7 +5,6 @@ import java.util.List;
 
 import wang.miansen.printer.core.builder.BeanMappingBuilder;
 import wang.miansen.printer.core.builder.ClassMappingBuilder;
-import wang.miansen.printer.core.builder.ClassMappingOption;
 import wang.miansen.printer.core.map.AbstractClassMap;
 import wang.miansen.printer.core.map.AbstractFieldMap;
 import wang.miansen.printer.core.metadata.PrinterClass;

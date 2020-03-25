@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import wang.miansen.printer.core.propertydescriptor.PrinterPropertyDescriptor;
 
 /**
- * Printer 内部的字段描述类，相当于对 {@link Field} 进一步封装。
+ * Printer 内部用于描述映射字段的类，相当于对 {@link Field} 进一步封装。
  * 
  * @author miansen.wang
  * @date 2020-03-21
@@ -15,7 +15,7 @@ public class PrinterField {
 	/**
 	 * 字段所属的类
 	 */
-	private Class<?> clazz;
+	private PrinterClass printerClass;
 
 	/**
 	 * 字段的名字
@@ -39,12 +39,12 @@ public class PrinterField {
 
 	}
 
-	public Class<?> getClazz() {
-		return clazz;
+	public PrinterClass getPrinterClass() {
+		return printerClass;
 	}
 
-	void setClazz(Class<?> clazz) {
-		this.clazz = clazz;
+	void setClazz(PrinterClass printerClass) {
+		this.printerClass = printerClass;
 	}
 
 	public String getName() {

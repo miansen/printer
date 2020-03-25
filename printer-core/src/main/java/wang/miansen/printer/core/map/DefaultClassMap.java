@@ -12,7 +12,7 @@ import wang.miansen.printer.core.metadata.PrinterClass;
  */
 public class DefaultClassMap extends AbstractClassMap {
 
-	public DefaultClassMap(PrinterClass sourceClass, PrinterClass targetClass, List<AbstractFieldMap> fieldMaps) {
+	public DefaultClassMap(PrinterClass sourceClass, PrinterClass targetClass, List<FieldMap> fieldMaps) {
 		super(sourceClass, targetClass, fieldMaps);
 	}
 

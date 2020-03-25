@@ -25,9 +25,9 @@ public abstract class AbstractClassMap implements ClassMap {
 	/**
 	 * 源字段与目标字段的映射关系
 	 */
-	private final List<AbstractFieldMap> fieldMaps;
+	private final List<FieldMap> fieldMaps;
 
-	public AbstractClassMap(PrinterClass sourceClass, PrinterClass targetClass, List<AbstractFieldMap> fieldMaps) {
+	public AbstractClassMap(PrinterClass sourceClass, PrinterClass targetClass, List<FieldMap> fieldMaps) {
 		this.sourceClass = sourceClass;
 		this.targetClass = targetClass;
 		this.fieldMaps = fieldMaps;
@@ -41,7 +41,7 @@ public abstract class AbstractClassMap implements ClassMap {
 		return targetClass;
 	}
 
-	public List<AbstractFieldMap> getFieldMaps() {
+	public List<FieldMap> getFieldMaps() {
 		return fieldMaps;
 	}
 
