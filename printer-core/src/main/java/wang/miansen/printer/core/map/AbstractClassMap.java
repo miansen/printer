@@ -45,9 +45,4 @@ public abstract class AbstractClassMap implements ClassMap {
 		return fieldMaps;
 	}
 
-	@Override
-	public String toString() {
-		return "ClassMap {sourceClass=" + sourceClass + ", targetClass=" + targetClass + "}";
-	}
-
 }

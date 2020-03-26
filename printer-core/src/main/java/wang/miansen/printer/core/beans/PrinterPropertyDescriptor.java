@@ -1,4 +1,4 @@
-package wang.miansen.printer.core.propertydescriptor;
+package wang.miansen.printer.core.beans;
 
 /**
  * Printer 内部属性描述符接口。用于读取和写入目标对象上的实际字段映射值。

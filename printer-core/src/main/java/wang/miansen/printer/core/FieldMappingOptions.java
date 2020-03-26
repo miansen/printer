@@ -1,9 +1,9 @@
 package wang.miansen.printer.core;
 
-import wang.miansen.printer.core.builder.FieldMapBuilderDirector;
+import wang.miansen.printer.core.director.FieldMapBuildDirector;
 
 /**
- * 字段基本的映射选项
+ * 字段级别的映射选项
  * 
  * @author miansen.wang
  * @date 2020-03-26
@@ -23,8 +23,8 @@ public final class FieldMappingOptions {
 	 */
 	public static FieldMappingOption stopOnErrors(final boolean stopOrContinue) {
 		return fieldMapBuilder -> {
-			if (fieldMapBuilder instanceof FieldMapBuilderDirector.CustomFieldMapBuilder) {
-				FieldMapBuilderDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuilderDirector.CustomFieldMapBuilder) fieldMapBuilder;
+			if (fieldMapBuilder instanceof FieldMapBuildDirector.CustomFieldMapBuilder) {
+				FieldMapBuildDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuildDirector.CustomFieldMapBuilder) fieldMapBuilder;
 				Configuration fieldConfiguration = customFieldMapBuilder.getFieldConfiguration();
 				fieldConfiguration.setStopOnErrors(stopOrContinue);
 			}
@@ -36,8 +36,8 @@ public final class FieldMappingOptions {
 	 */
 	public static FieldMappingOption mapNull(final boolean mapNull) {
 		return fieldMapBuilder -> {
-			if (fieldMapBuilder instanceof FieldMapBuilderDirector.CustomFieldMapBuilder) {
-				FieldMapBuilderDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuilderDirector.CustomFieldMapBuilder) fieldMapBuilder;
+			if (fieldMapBuilder instanceof FieldMapBuildDirector.CustomFieldMapBuilder) {
+				FieldMapBuildDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuildDirector.CustomFieldMapBuilder) fieldMapBuilder;
 				Configuration fieldConfiguration = customFieldMapBuilder.getFieldConfiguration();
 				fieldConfiguration.setMapNull(mapNull);
 			}
@@ -49,8 +49,8 @@ public final class FieldMappingOptions {
 	 */
 	public static FieldMappingOption mapEmptyString(final boolean mapEmptyString) {
 		return fieldMapBuilder -> {
-			if (fieldMapBuilder instanceof FieldMapBuilderDirector.CustomFieldMapBuilder) {
-				FieldMapBuilderDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuilderDirector.CustomFieldMapBuilder) fieldMapBuilder;
+			if (fieldMapBuilder instanceof FieldMapBuildDirector.CustomFieldMapBuilder) {
+				FieldMapBuildDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuildDirector.CustomFieldMapBuilder) fieldMapBuilder;
 				Configuration fieldConfiguration = customFieldMapBuilder.getFieldConfiguration();
 				fieldConfiguration.setMapEmptyString(mapEmptyString);
 			}
@@ -64,8 +64,8 @@ public final class FieldMappingOptions {
 	 */
 	public static FieldMappingOption copyByReferences(final boolean copyByReferences) {
 		return fieldMapBuilder -> {
-			if (fieldMapBuilder instanceof FieldMapBuilderDirector.CustomFieldMapBuilder) {
-				FieldMapBuilderDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuilderDirector.CustomFieldMapBuilder) fieldMapBuilder;
+			if (fieldMapBuilder instanceof FieldMapBuildDirector.CustomFieldMapBuilder) {
+				FieldMapBuildDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuildDirector.CustomFieldMapBuilder) fieldMapBuilder;
 				Configuration fieldConfiguration = customFieldMapBuilder.getFieldConfiguration();
 				fieldConfiguration.setCopyByReferences(copyByReferences);
 			}
@@ -77,8 +77,8 @@ public final class FieldMappingOptions {
 	 */
 	public static FieldMappingOption dateFormat(final String dateFormat) {
 		return fieldMapBuilder -> {
-			if (fieldMapBuilder instanceof FieldMapBuilderDirector.CustomFieldMapBuilder) {
-				FieldMapBuilderDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuilderDirector.CustomFieldMapBuilder) fieldMapBuilder;
+			if (fieldMapBuilder instanceof FieldMapBuildDirector.CustomFieldMapBuilder) {
+				FieldMapBuildDirector.CustomFieldMapBuilder customFieldMapBuilder = (FieldMapBuildDirector.CustomFieldMapBuilder) fieldMapBuilder;
 				Configuration fieldConfiguration = customFieldMapBuilder.getFieldConfiguration();
 				fieldConfiguration.setDateFormat(dateFormat);
 			}

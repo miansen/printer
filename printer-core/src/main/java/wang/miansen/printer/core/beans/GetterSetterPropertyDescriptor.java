@@ -1,4 +1,4 @@
-package wang.miansen.printer.core.propertydescriptor;
+package wang.miansen.printer.core.beans;
 
 import java.lang.reflect.Method;
 
@@ -36,7 +36,7 @@ public abstract class GetterSetterPropertyDescriptor extends AbstractPropertyDes
 	/**
 	 * 获取深度映射字段的 getter 方法
 	 * 
-	 * @return
+	 * @return Method[]
 	 * @throws NoSuchMethodException
 	 */
 	protected abstract Method[] getDeepReadMethod() throws NoSuchMethodException;
@@ -44,7 +44,7 @@ public abstract class GetterSetterPropertyDescriptor extends AbstractPropertyDes
 	/**
 	 * 获取深度映射字段的 setter 方法
 	 * 
-	 * @return
+	 * @return Method[]
 	 * @throws NoSuchMethodException
 	 */
 	protected abstract Method[] getDeepWriteMethod() throws NoSuchMethodException;

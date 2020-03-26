@@ -1,4 +1,4 @@
-package wang.miansen.printer.core.propertydescriptor;
+package wang.miansen.printer.core.beans;
 
 /**
  * Printer 内部属性描述符抽象父类，定义了一些公共的属性。

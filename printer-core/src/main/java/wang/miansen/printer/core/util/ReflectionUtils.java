@@ -19,15 +19,11 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import wang.miansen.printer.core.entity.Dog;
-import wang.miansen.printer.core.entity.Student;
-
 /**
  * 反射工具类
  * 
  * @author miansen.wang
- * @date 2019-12-29
- * @since 3.0
+ * @date 2020-03-20
  */
 public abstract class ReflectionUtils {
 

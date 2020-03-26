@@ -1,13 +1,7 @@
 package wang.miansen.printer.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import wang.miansen.printer.core.builder.BeanMappingBuilder;
-import wang.miansen.printer.core.builder.ClassMappingBuilder;
-import wang.miansen.printer.core.map.AbstractClassMap;
-import wang.miansen.printer.core.map.AbstractFieldMap;
-import wang.miansen.printer.core.metadata.PrinterClass;
+import wang.miansen.printer.core.director.ClassMapBuildDirector;
+import wang.miansen.printer.core.map.ClassMap;
 
 /**
  * @author miansen.wang
@@ -15,33 +9,25 @@ import wang.miansen.printer.core.metadata.PrinterClass;
  */
 public class PrinterBeanMapperBuilder {
 
-	private AbstractClassMap classMap;
-
-	private List<AbstractFieldMap> fieldMaps;
-
 	private MappingContext mappingContext;
 	
-	private List<BeanMappingBuilder> classMappingBuilder;
-
 	private PrinterBeanMapperBuilder() {
 		mappingContext = new MappingContext();
-		classMappingBuilder = new ArrayList<>();
 	}
 
 	public static PrinterBeanMapperBuilder create() {
 		return new PrinterBeanMapperBuilder();
 	}
 
-	public ClassMappingBuilder mapping(Class<?> typeA, Class<?> typeB, ClassMappingOption... option) {
-		fieldMaps = new ArrayList<>();
-		classMap = new AbstractClassMap();
-		PrinterClass a = new PrinterClass(typeA);
-		PrinterClass b = new PrinterClass(typeB);
-		classMap.setSrcClass(a);
-		classMap.setDestClass(b);
-		classMap.setFieldMaps(fieldMaps);
+	public ClassMapBuildDirector mapping(Class<?> source, Class<?> target, ClassMappingOption... classMappingOptions) {
+		ClassMapBuildDirector classMapBuildDirector = new ClassMapBuildDirector(source, target, this);
+		ClassMapBuildDirector.ClassMapBuilder customClassMapBuilder = classMapBuildDirector.custom();
+		for (ClassMappingOption classMappingOption : classMappingOptions) {
+			classMappingOption.apply(customClassMapBuilder);
+		}
+		ClassMap classMap = customClassMapBuilder.build();
 		mappingContext.addClassMap(classMap);
-		return new ClassMappingBuilder(classMap, this);
+		return classMapBuildDirector;
 	}
 
 	public PrinterBeanMapper build() {

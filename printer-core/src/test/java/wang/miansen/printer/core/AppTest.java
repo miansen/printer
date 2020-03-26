@@ -15,12 +15,14 @@ public class AppTest {
 	@Test
 	public void test01() throws Exception {
 		Mapper mapper = PrinterBeanMapperBuilder.create()
-								.mapping(Student.class, StudentDTO.class)
-								.field("name", "name")
+								.mapping(Student.class, StudentDTO.class, ClassMappingOptions.wildcard(false))
+								.field("name", "name", FieldMappingOptions.copyByReferences(true), 
+										FieldMappingOptions.mapEmptyString(false))
 								.field("age", "age")
 								.ok()
 								.mapping(Student.class, StudentDTO.class)
-								.field("addr", "addr")
+								.field("mobile", "mobile")
+								.field("dog.name", "name")
 								.ok()
 								.build();
 	}

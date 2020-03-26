@@ -10,8 +10,8 @@ import wang.miansen.printer.core.metadata.PrinterField;
  */
 public class ExcludeFieldMap extends AbstractFieldMap {
 
-	public ExcludeFieldMap(PrinterField sourceField, PrinterField targetField, ClassMap classMap) {
-		super(sourceField, targetField, classMap);
+	public ExcludeFieldMap(PrinterField excludeField, ClassMap classMap) {
+		super(excludeField, null, classMap);
 	}
 
 	@Override

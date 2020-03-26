@@ -1,6 +1,8 @@
 package wang.miansen.printer.core;
 
 /**
+ * 映射异常
+ * 
  * @author miansen.wang
  * @date 2020-03-20
  */

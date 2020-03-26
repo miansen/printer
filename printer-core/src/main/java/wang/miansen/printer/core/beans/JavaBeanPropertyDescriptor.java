@@ -1,4 +1,4 @@
-package wang.miansen.printer.core.propertydescriptor;
+package wang.miansen.printer.core.beans;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -30,20 +30,35 @@ public class JavaBeanPropertyDescriptor extends GetterSetterPropertyDescriptor {
 	 */
 	private PropertyDescriptor[] deepPropertyDescriptor;
 
+	/**
+	 * 只能通过 {@link PrinterPropertyDescriptorFactory} 获取此类的实例
+	 * 
+	 * @param clazz 属性所属的类的类型
+	 * @param propertyName 属性的名字
+	 */
 	JavaBeanPropertyDescriptor(Class<?> clazz, String propertyName) {
 		super(clazz, propertyName);
 	}
 
+	/**
+	 * 获取字段的 getter 方法
+	 */
 	@Override
 	protected Method getReadMethod() throws NoSuchMethodException {
 		return getPropertyDescriptor().getReadMethod();
 	}
 
+	/**
+	 * 获取字段的 setter 方法
+	 */
 	@Override
 	protected Method getWriteMethod() throws NoSuchMethodException {
 		return getPropertyDescriptor().getWriteMethod();
 	}
 
+	/**
+	 * 获取深度映射字段的 getter 方法
+	 */
 	@Override
 	protected Method[] getDeepReadMethod() throws NoSuchMethodException {
 		PropertyDescriptor[] deepPropertyDescriptor = getDeepPropertyDescriptor();
@@ -55,6 +70,9 @@ public class JavaBeanPropertyDescriptor extends GetterSetterPropertyDescriptor {
 		return deepReadMethod;
 	}
 
+	/**
+	 * 获取深度映射字段的 setter 方法
+	 */
 	@Override
 	protected Method[] getDeepWriteMethod() throws NoSuchMethodException {
 		PropertyDescriptor[] deepPropertyDescriptor = getDeepPropertyDescriptor();
@@ -63,9 +81,14 @@ public class JavaBeanPropertyDescriptor extends GetterSetterPropertyDescriptor {
 		for (PropertyDescriptor propertyDescriptor : deepPropertyDescriptor) {
 			deepWriteMethod[index++] = propertyDescriptor.getWriteMethod();
 		}
-		return null;
+		return deepWriteMethod;
 	}
 
+	/**
+	 * 获取字段的属性描述符
+	 * 
+	 * @return PropertyDescriptor
+	 */
 	protected PropertyDescriptor getPropertyDescriptor() {
 		if (propertyDescriptor == null) {
 			propertyDescriptor = ReflectionUtils.getPropertyDescriptor(clazz, propertyName);
@@ -73,6 +96,11 @@ public class JavaBeanPropertyDescriptor extends GetterSetterPropertyDescriptor {
 		return propertyDescriptor;
 	}
 
+	/**
+	 * 获取深度映射字段的属性描述符
+	 * 
+	 * @return PropertyDescriptor[]
+	 */
 	protected PropertyDescriptor[] getDeepPropertyDescriptor() {
 		if (deepPropertyDescriptor == null && MappingUtils.isDeepMapping(propertyName)) {
 			deepPropertyDescriptor = ReflectionUtils.getDeepPropertyDescriptor(clazz, propertyName);
@@ -80,6 +108,9 @@ public class JavaBeanPropertyDescriptor extends GetterSetterPropertyDescriptor {
 		return deepPropertyDescriptor;
 	}
 
+	/**
+	 * 获取字段的类型
+	 */
 	@Override
 	public Class<?> getPropertyType() {
 		if (propertyType == null) {

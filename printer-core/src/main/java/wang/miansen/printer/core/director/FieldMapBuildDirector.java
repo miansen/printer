@@ -1,8 +1,9 @@
-package wang.miansen.printer.core.builder;
+package wang.miansen.printer.core.director;
 
 import java.util.List;
 
 import wang.miansen.printer.core.Configuration;
+import wang.miansen.printer.core.beans.PrinterPropertyDescriptorFactory;
 import wang.miansen.printer.core.map.ClassMap;
 import wang.miansen.printer.core.map.CustomFieldMap;
 import wang.miansen.printer.core.map.DefaultFieldMap;
@@ -11,16 +12,15 @@ import wang.miansen.printer.core.map.FieldMap;
 import wang.miansen.printer.core.metadata.PrinterClass;
 import wang.miansen.printer.core.metadata.PrinterField;
 import wang.miansen.printer.core.metadata.PrinterFieldBuilder;
-import wang.miansen.printer.core.propertydescriptor.PropertyDescriptorFactory;
 
 /**
- * 用于创建 {@link FieldMap} 对象
- * <p>请根据实际的情况，选择合适的构造器 -> {@link #default_()} | {@link #custom()} | {@link #exclude()}
+ * 指挥各个建造者创建 {@link FieldMap} 对象
+ * <p>请根据实际的情况，选择合适的建造者 -> {@link #default_()} | {@link #custom()} | {@link #exclude()}
  * 
  * @author miansen.wang
  * @date 2020-03-23
  */
-public final class FieldMapBuilderDirector {
+public final class FieldMapBuildDirector {
 
 	/**
 	 * 来源字段的名字
@@ -40,9 +40,17 @@ public final class FieldMapBuilderDirector {
 	/**
 	 * 属性描述符工厂
 	 */
-	private final PropertyDescriptorFactory propertyDescriptorFactory;
+	private final PrinterPropertyDescriptorFactory propertyDescriptorFactory;
 	
-	public FieldMapBuilderDirector(String sourceFieldName, String targetFieldName, ClassMap classMap, PropertyDescriptorFactory propertyDescriptorFactory) {
+	/**
+	 * 创建一个指挥者对象
+	 * 
+	 * @param sourceFieldName 来源字段的名字
+	 * @param targetFieldName 目标字段的名字
+	 * @param classMap 类映射
+	 * @param propertyDescriptorFactory 属性描述符工厂
+	 */
+	public FieldMapBuildDirector(String sourceFieldName, String targetFieldName, ClassMap classMap, PrinterPropertyDescriptorFactory propertyDescriptorFactory) {
 		this.sourceFieldName = sourceFieldName;
 		this.targetFieldName = targetFieldName;
 		this.classMap = classMap;
@@ -50,24 +58,27 @@ public final class FieldMapBuilderDirector {
 	}
 
 	/**
-	 * 用于创建 {@link DefaultFieldMap} 对象
-	 * @return
+	 * 获取默认的字段映射建造者
+	 * 
+	 * @return FieldMapBuilder
 	 */
 	public FieldMapBuilder default_() {
 		return new DefaultFieldMapBuilder();
 	}
 	
 	/**
-	 * 用于创建 {@link CustomFieldMap} 对象
-	 * @return
+	 * 获取自定义字段映射建造者
+	 * 
+	 * @return FieldMapBuilder
 	 */
 	public FieldMapBuilder custom() {
 		return new CustomFieldMapBuilder();
 	}
 	
 	/**
-	 * 用于创建 {@link ExcludeFieldMap} 对象
-	 * @return
+	 * 获取排除字段映射建造者
+	 * 
+	 * @return FieldMapBuilder
 	 */
 	public FieldMapBuilder exclude() {
 		return new ExcludeFieldMapBuilder();
@@ -88,13 +99,17 @@ public final class FieldMapBuilderDirector {
 	/**
 	 * 默认的字段映射建造者
 	 */
-	public class DefaultFieldMapBuilder implements FieldMapBuilder {
+	public final class DefaultFieldMapBuilder implements FieldMapBuilder {
+		
+		DefaultFieldMapBuilder() {
+			
+		}
 		
 		@Override
 		public void build() {
 			PrinterClass sourceClass = classMap.getSourceClass();
 			PrinterClass targetClass = classMap.getTargetClass();
-			List<FieldMap> fieldMaps = FieldMapBuilderDirector.this.classMap.getFieldMaps();
+			List<FieldMap> fieldMaps = FieldMapBuildDirector.this.classMap.getFieldMaps();
 			PrinterFieldBuilder sourceFieldBuilder = new PrinterFieldBuilder(sourceClass, sourceFieldName, propertyDescriptorFactory);
 			PrinterField sourceField = sourceFieldBuilder.build();
 			PrinterFieldBuilder targetFieldBuilder = new PrinterFieldBuilder(targetClass, targetFieldName, propertyDescriptorFactory);
@@ -108,7 +123,11 @@ public final class FieldMapBuilderDirector {
 	/**
 	 * 自定义字段映射建造者
 	 */
-	public class CustomFieldMapBuilder implements FieldMapBuilder {
+	public final class CustomFieldMapBuilder implements FieldMapBuilder {
+		
+		CustomFieldMapBuilder() {
+			
+		}
 
 		/**
 		 * 字段级别的配置
@@ -140,17 +159,21 @@ public final class FieldMapBuilderDirector {
 	}
 	
 	/**
-	 * 排除映射的字段建造者
+	 * 排除字段映射建造者
 	 */
-	public class ExcludeFieldMapBuilder implements FieldMapBuilder {
+	public final class ExcludeFieldMapBuilder implements FieldMapBuilder {
+		
+		ExcludeFieldMapBuilder() {
+			
+		}
 		
 		@Override
 		public void build() {
 			PrinterClass sourceClass = classMap.getSourceClass();
 			List<FieldMap> fieldMaps = classMap.getFieldMaps();
 			PrinterFieldBuilder sourcePrinterFieldBuilder = new PrinterFieldBuilder(sourceClass, sourceFieldName, propertyDescriptorFactory);
-			PrinterField sourceField = sourcePrinterFieldBuilder.build();
-			FieldMap excludeFieldMap = new ExcludeFieldMap(sourceField, null, classMap);
+			PrinterField excludeField = sourcePrinterFieldBuilder.build();
+			FieldMap excludeFieldMap = new ExcludeFieldMap(excludeField, classMap);
 			fieldMaps.add(excludeFieldMap);
 		}
 		

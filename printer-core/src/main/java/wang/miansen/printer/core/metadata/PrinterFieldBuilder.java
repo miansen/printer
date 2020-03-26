@@ -1,7 +1,7 @@
 package wang.miansen.printer.core.metadata;
 
-import wang.miansen.printer.core.propertydescriptor.PrinterPropertyDescriptor;
-import wang.miansen.printer.core.propertydescriptor.PropertyDescriptorFactory;
+import wang.miansen.printer.core.beans.PrinterPropertyDescriptor;
+import wang.miansen.printer.core.beans.PrinterPropertyDescriptorFactory;
 
 /**
  * 用于创建 {@link PrinterField} 对象
@@ -24,7 +24,7 @@ public class PrinterFieldBuilder {
 	/**
 	 * 属性描述符工厂
 	 */
-	private final PropertyDescriptorFactory propertyDescriptorFactory;
+	private final PrinterPropertyDescriptorFactory propertyDescriptorFactory;
 
 	/**
 	 * 创建一个 {@link PrinterFieldBuilder} 对象
@@ -33,7 +33,7 @@ public class PrinterFieldBuilder {
 	 * @param name 字段的名字
 	 * @param propertyDescriptorFactory 属性描述符工厂
 	 */
-	public PrinterFieldBuilder(PrinterClass printerClass, String name, PropertyDescriptorFactory propertyDescriptorFactory) {
+	public PrinterFieldBuilder(PrinterClass printerClass, String name, PrinterPropertyDescriptorFactory propertyDescriptorFactory) {
 		this.printerClass = printerClass;
 		this.name = name;
 		this.propertyDescriptorFactory = propertyDescriptorFactory;

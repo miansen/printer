@@ -12,10 +12,25 @@ import wang.miansen.printer.core.metadata.PrinterClass;
  */
 public interface ClassMap {
 
+	/**
+	 * 获取来源 PrinterClass
+	 * 
+	 * @return {@link PrinterClass}
+	 */
 	PrinterClass getSourceClass();
 	
+	/**
+	 * 获取目标 PrinterClass
+	 * 
+	 * @return {@link PrinterClass}
+	 */
 	PrinterClass getTargetClass();
 	
+	/**
+	 * 获取字段映射关系
+	 * 
+	 * @return {@link FieldMap}
+	 */
 	List<FieldMap> getFieldMaps();
 	
 }
