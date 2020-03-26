@@ -1,6 +1,6 @@
 package wang.miansen.printer.core;
 
-import wang.miansen.printer.core.builder.FieldMapBuilder;
+import wang.miansen.printer.core.builder.FieldMapBuilderDirector;
 
 /**
  * @author miansen.wang
@@ -8,5 +8,6 @@ import wang.miansen.printer.core.builder.FieldMapBuilder;
  */
 public interface FieldMappingOption {
 
-	void apply(FieldMapBuilder fieldMappingBuilder);
+	void apply(FieldMapBuilderDirector.FieldMapBuilder fieldMapBuilder);
+	
 }

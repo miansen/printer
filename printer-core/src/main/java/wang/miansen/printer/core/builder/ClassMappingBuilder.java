@@ -3,11 +3,8 @@ package wang.miansen.printer.core.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import wang.miansen.printer.core.FieldMappingOption;
 import wang.miansen.printer.core.PrinterBeanMapperBuilder;
-import wang.miansen.printer.core.map.AbstractClassMap;
 import wang.miansen.printer.core.map.ClassMap;
 import wang.miansen.printer.core.propertydescriptor.PropertyDescriptorFactory;
 
@@ -21,7 +18,7 @@ public final class ClassMappingBuilder implements BeanMappingBuilder {
 	
 	private final ClassMap classMap;
 	
-	private final List<FieldMapBuilder> fieldMapBuilders;
+	private final List<FieldMapBuilderDirector.FieldMapBuilder> fieldMapBuilders;
 	
 	private final PropertyDescriptorFactory propertyDescriptorFactory;
 
@@ -33,11 +30,12 @@ public final class ClassMappingBuilder implements BeanMappingBuilder {
 	}
 
 	public ClassMappingBuilder field(String source, String target, FieldMappingOption... fieldMappingOptions) {
-		FieldMapBuilder fieldMapBuilder = new FieldMapBuilder(source, target, classMap, propertyDescriptorFactory);
+		FieldMapBuilderDirector fiBuilderDirector = new FieldMapBuilderDirector(source, target, classMap, propertyDescriptorFactory);
+		FieldMapBuilderDirector.FieldMapBuilder customFieldMapBuilder = fiBuilderDirector.custom();
 		for (FieldMappingOption fieldMappingOption : fieldMappingOptions) {
-			fieldMappingOption.apply(fieldMapBuilder);
+			fieldMappingOption.apply(customFieldMapBuilder);
 		}
-		fieldMapBuilders.add(fieldMapBuilder);
+		fieldMapBuilders.add(customFieldMapBuilder);
 		return this;
 	}
 
@@ -55,8 +53,8 @@ public final class ClassMappingBuilder implements BeanMappingBuilder {
 
 	@Override
 	public void build() {
-		for (BeanMappingBuilder fiBeanMappingBuilder : fieldMappingBuilders) {
-			fiBeanMappingBuilder.build();
+		for (FieldMapBuilderDirector.FieldMapBuilder fieldMapBuilder : fieldMapBuilders) {
+			fieldMapBuilder.build();
 		}
 	}
 	
