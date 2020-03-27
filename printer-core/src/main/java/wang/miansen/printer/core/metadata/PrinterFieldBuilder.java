@@ -1,5 +1,7 @@
 package wang.miansen.printer.core.metadata;
 
+import java.util.List;
+
 import wang.miansen.printer.core.beans.PrinterPropertyDescriptor;
 import wang.miansen.printer.core.beans.PrinterPropertyDescriptorFactory;
 
@@ -46,11 +48,13 @@ public class PrinterFieldBuilder {
 	 */
 	public PrinterField build() {
 		PrinterPropertyDescriptor propertyDescriptor = propertyDescriptorFactory.getPropertyDescriptor(printerClass.getClazz(), name);
+		List<PrinterField> printerFields = printerClass.getPrinterFields();
 		PrinterField printerField = new PrinterField();
 		printerField.setClazz(printerClass);
 		printerField.setName(name);
 		printerField.setType(propertyDescriptor.getPropertyType());
 		printerField.setPrinterPropertyDescriptor(propertyDescriptor);
+		printerFields.add(printerField);
 		return printerField;
 	}
 

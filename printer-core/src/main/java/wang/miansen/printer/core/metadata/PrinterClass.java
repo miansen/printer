@@ -1,5 +1,7 @@
 package wang.miansen.printer.core.metadata;
 
+import java.util.List;
+
 /**
  * 用于描述映射类，相当于对 Class 的进一步封装。
  * 
@@ -17,6 +19,11 @@ public class PrinterClass {
 	 * 映射类的 Class 对象
 	 */
 	private Class<?> clazz;
+	
+	/**
+	 * 此类拥有的字段
+	 */
+	private List<PrinterField> printerFields;
 
 	/**
 	 * 只能通过 {@link PrinterClassBuilder} 创建实例对象
@@ -59,6 +66,24 @@ public class PrinterClass {
 	 */
 	void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
+	}
+	
+	/**
+	 * 获取字段列表
+	 * 
+	 * @return List<PrinterField>
+	 */
+	public List<PrinterField> getPrinterFields() {
+		return printerFields;
+	}
+
+	/**
+	 * 设置字段列表
+	 * 
+	 * @param printerFields 字段列表
+	 */
+	void setPrinterFields(List<PrinterField> printerFields) {
+		this.printerFields = printerFields;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package wang.miansen.printer.core.metadata;
 
+import java.util.ArrayList;
+
 /**
  * 用于创建 {@link PrinterClass} 对象
  * 
@@ -31,6 +33,7 @@ public class PrinterClassBuilder {
 		PrinterClass printerClass = new PrinterClass();
 		printerClass.setClazz(clazz);
 		printerClass.setName(clazz.getName());
+		printerClass.setPrinterFields(new ArrayList<>());
 		return printerClass;
 	}
 
