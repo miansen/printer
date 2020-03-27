@@ -18,7 +18,7 @@ public class AppTest {
 								.mapping(Student.class, StudentDTO.class, ClassMappingOptions.wildcard(false))
 								.field("name", "name", FieldMappingOptions.copyByReferences(true), 
 										FieldMappingOptions.mapEmptyString(false))
-								.field("age", "age")
+								.field("age1", "age")
 								.ok()
 								.mapping(Student.class, StudentDTO.class)
 								.field("mobile", "mobile")
