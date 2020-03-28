@@ -11,8 +11,10 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,6 +30,8 @@ import org.slf4j.LoggerFactory;
 public abstract class ReflectionUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+	
+	private static final Map<Class<?>, PropertyDescriptor[]> DESCRIPTORS_CACHE = new ConcurrentHashMap<>();
 
 	/**
 	 * 获取直接父类的泛型的 Class 对象
@@ -84,7 +88,7 @@ public abstract class ReflectionUtils {
 	}
 
 	/**
-	 * 获取指定字段的 set 方法
+	 * 获取指定字段的 setter 方法
 	 * 
 	 * @param fieldName 指定的字段名
 	 * @param clazz 字段所属的类
@@ -101,7 +105,7 @@ public abstract class ReflectionUtils {
 	}
 
 	/**
-	 * 获取指定字段的 get 方法
+	 * 获取指定字段的 getter 方法
 	 * 
 	 * @param fieldName 指定的字段名
 	 * @param clazz 字段所属的类
@@ -115,67 +119,6 @@ public abstract class ReflectionUtils {
 		} catch (IntrospectionException e) {
 			throw new RuntimeException("Could not get read method", e);
 		}
-	}
-
-	/**
-	 * 假如一个对象符合 Java Bean 定义的规范，则可以根据表达式返回一个值。支持 <b>"."</b> 操作符。使用例子如下：
-	 * <code>
-	 * 	<pre>
-	 * class Foo {
-	 * 	Boo boo;
-	 * 	public Boo getBoo() {
-	 * 		return boo;
-	 * 	}
-	 * 	public void setBooe(Boo boo) {
-	 * 		this.boo = boo;
-	 * 	}
-	 * }
-	 * class Boo {
-	 * 	String name;
-	 * 	public String getName() {
-	 * 		return name;
-	 * 	}
-	 * 	public void setName(String name) {
-	 * 		this.name = name;
-	 * 	}
-	 * }
-	 * public static void main(String[] args) {
-	 * 
-	 * 	Boo boo = new Boo();
-	 * 	boo.setName("hello!");
-	 *  
-	 * 	Foo foo = new Foo();
-	 * 	foo.setBoo(boo);
-	 * 
-	 * 	// return "hello!"
-	 * 	Object result = doExpression("boo.name", foo);
-	 * }
-	 * 	</pre>
-	 * </code>
-	 * 
-	 * @param expression 表达式，支持 <b>"."</b> 操作符
-	 * @param object 符合 Java Bean 定义的规范的对象
-	 * @return Object
-	 * @throws Exception
-	 */
-	public static Object doExpression(String expression, Object object) throws Exception {
-		if (object == null) {
-			return object;
-		}
-		Object value = null;
-		Object next = object;
-		String[] segments = expression.split("\\.");
-		if (segments.length == 1) {
-			Method readMethod = getReadMethod(segments[0], next.getClass());
-			value = readMethod.invoke(object);
-		} else {
-			for (int i = 0; i < segments.length - 1; i++) {
-				Method readMethod = getReadMethod(segments[i], next.getClass());
-				next = readMethod.invoke(next);
-				value = doExpression(segments[i + 1], next);
-			}
-		}
-		return value;
 	}
 
 	/**
@@ -202,7 +145,7 @@ public abstract class ReflectionUtils {
 	}
 
 	/**
-	 * 获取 PropertyDescriptor，支持深度匹配
+	 * 根据输入的类对象和字段名称，获取一个合适的属性描述符。
 	 * 
 	 * @param clazz 类的 Class 对象
 	 * @param fieldName 字段的名字，支持 <b>"."</b> 操作符
@@ -211,7 +154,7 @@ public abstract class ReflectionUtils {
 	public static PropertyDescriptor getPropertyDescriptor(Class<?> clazz, String fieldName) {
 		PropertyDescriptor propertyDescriptor = null;
 		if (MappingUtils.isDeepMapping(fieldName)) {
-			PropertyDescriptor[] propertyDescriptors = getDeepPropertyDescriptor(clazz, fieldName);
+			PropertyDescriptor[] propertyDescriptors = getDeepPropertyDescriptors(clazz, fieldName);
 			propertyDescriptor = propertyDescriptors[propertyDescriptors.length - 1];
 		} else {
 			try {
@@ -222,6 +165,17 @@ public abstract class ReflectionUtils {
 		}
 		return propertyDescriptor;
 	}
+	
+	public static PropertyDescriptor[] getPropertyDescriptors(final Class<?> clazz) {
+		if (clazz == null) {
+            throw new IllegalArgumentException("No bean class specified");
+        }
+		PropertyDescriptor[] propertyDescriptors = DESCRIPTORS_CACHE.get(clazz);
+		if (propertyDescriptors == null) {
+			
+		}
+		return propertyDescriptors;
+	}
 
 	/**
 	 * 深度匹配所有的 PropertyDescriptor
@@ -230,7 +184,7 @@ public abstract class ReflectionUtils {
 	 * @param fieldName 字段的名字，必须要有 <b>"."</b> 操作符
 	 * @return
 	 */
-	public static PropertyDescriptor[] getDeepPropertyDescriptor(Class<?> parentClass, String fieldName) {
+	public static PropertyDescriptor[] getDeepPropertyDescriptors(Class<?> parentClass, String fieldName) {
 		if (!MappingUtils.isDeepMapping(fieldName)) {
 			MappingUtils.throwMappingException("Field does not contain deep field delimitor");
 		}

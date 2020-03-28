@@ -103,7 +103,7 @@ public class JavaBeanPropertyDescriptor extends GetterSetterPropertyDescriptor {
 	 */
 	protected PropertyDescriptor[] getDeepPropertyDescriptor() {
 		if (deepPropertyDescriptor == null && MappingUtils.isDeepMapping(propertyName)) {
-			deepPropertyDescriptor = ReflectionUtils.getDeepPropertyDescriptor(clazz, propertyName);
+			deepPropertyDescriptor = ReflectionUtils.getDeepPropertyDescriptors(clazz, propertyName);
 		}
 		return deepPropertyDescriptor;
 	}
