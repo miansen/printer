@@ -37,14 +37,6 @@ public interface IntrospectionContext {
 	void addPropertyDescriptors(PropertyDescriptor[] descriptors);
 
 	/**
-	 * 检测此上下文中是否已经包含指定名称的属性描述符。可以使用此方法来防止已存在的属性描述符被覆盖。
-	 * 
-	 * @param name 要检测的属性名称
-	 * @return 如果已经添加过了此属性的描述符，则返回 {@code true}，否则返回 {@code false}。
-	 */
-	boolean hasProperty(String name);
-
-	/**
 	 * 返回指定名称的属性描述符，如果此属性未知，则返回 <b>null</b>。
 	 * 
 	 * @param name 属性的名称
@@ -53,11 +45,26 @@ public interface IntrospectionContext {
 	PropertyDescriptor getPropertyDescriptor(String name);
 
 	/**
+	 * 以数组的形式返回所有已知的属性描述符，如果此属性未知，则返回 <b>空数组</b>。
+	 * 
+	 * @return 属性描述符数组
+	 */
+	PropertyDescriptor[] getPropertyDescriptor();
+
+	/**
 	 * 删除指定名称的属性描述符。
 	 * 
 	 * @param name 属性的名称
 	 */
 	void removePropertyDescriptor(String name);
+
+	/**
+	 * 检测此上下文中是否已经包含指定名称的属性描述符。可以使用此方法来防止已存在的属性描述符被覆盖。
+	 * 
+	 * @param name 要检测的属性名称
+	 * @return 如果已经添加过了此属性的描述符，则返回 {@code true}，否则返回 {@code false}。
+	 */
+	boolean hasProperty(String name);
 
 	/**
 	 * 返回此上下文已知的所有属性的名称的集合。
