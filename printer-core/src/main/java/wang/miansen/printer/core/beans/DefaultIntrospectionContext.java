@@ -68,7 +68,7 @@ public class DefaultIntrospectionContext implements IntrospectionContext {
 	}
 
 	@Override
-	public PropertyDescriptor[] getPropertyDescriptor() {
+	public PropertyDescriptor[] getPropertyDescriptors() {
 		return descriptors.values().toArray(EMPTY_DESCRIPTORS);
 	}
 

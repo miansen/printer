@@ -5,8 +5,10 @@ import java.util.List;
 
 import wang.miansen.printer.core.Configuration;
 import wang.miansen.printer.core.FieldMappingOption;
+import wang.miansen.printer.core.MappingContext;
 import wang.miansen.printer.core.PrinterBeanMapperBuilder;
 import wang.miansen.printer.core.beans.PrinterPropertyDescriptorFactory;
+import wang.miansen.printer.core.director.FieldMapBuildDirector.FieldMapBuilder;
 import wang.miansen.printer.core.map.ClassMap;
 import wang.miansen.printer.core.map.CustomClassMap;
 import wang.miansen.printer.core.map.DefaultClassMap;
@@ -38,6 +40,8 @@ public final class ClassMapBuildDirector {
 	 */
 	private ClassMap classMap;
 	
+	private final MappingContext mappingContext;
+	
 	/**
 	 * bean 映射构建器
 	 */
@@ -53,6 +57,10 @@ public final class ClassMapBuildDirector {
 	 */
 	private final PrinterPropertyDescriptorFactory propertyDescriptorFactory;
 	
+	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, MappingContext mappingContext) {
+		this(sourceClass, targetClass, mappingContext, null);
+	}
+
 	/**
 	 * 创建指挥者的实例对象
 	 * 
@@ -61,8 +69,14 @@ public final class ClassMapBuildDirector {
 	 * @param printerBeanMapperBuilder bean 映射构建器
 	 */
 	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, PrinterBeanMapperBuilder printerBeanMapperBuilder) {
+		this(sourceClass, targetClass, null, printerBeanMapperBuilder);
+	}
+	
+	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, MappingContext mappingContext, 
+			PrinterBeanMapperBuilder printerBeanMapperBuilder) {
 		this.sourceClass = sourceClass;
 		this.targetClass = targetClass;
+		this.mappingContext = mappingContext;
 		this.printerBeanMapperBuilder = printerBeanMapperBuilder;
 		this.fieldMapBuilders = new ArrayList<>();
 		this.propertyDescriptorFactory = new PrinterPropertyDescriptorFactory();
@@ -108,9 +122,25 @@ public final class ClassMapBuildDirector {
 		for (FieldMapBuildDirector.FieldMapBuilder fieldMapBuilder : fieldMapBuilders) {
 			fieldMapBuilder.build();
 		}
+		loadDefaultFieldMap();
 		return printerBeanMapperBuilder;
 	}
 	
+	private void loadDefaultFieldMap() {
+		boolean loadable = false;
+		if (classMap instanceof CustomClassMap) {
+			CustomClassMap customClassMap = (CustomClassMap) classMap;
+			Configuration classConfiguration = customClassMap.getClassConfiguration();
+			loadable = classConfiguration.getWildcard();
+		} else {
+			Configuration globalConfiguration = mappingContext.getGlobalConfiguration();
+			loadable = globalConfiguration.getWildcard();
+		}
+		if (loadable) {
+			// TODO
+		}
+	}
+
 	/**
 	 * 获取默认的类映射建造者
 	 * 

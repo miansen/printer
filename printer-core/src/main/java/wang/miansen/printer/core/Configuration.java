@@ -3,7 +3,7 @@ package wang.miansen.printer.core;
 import wang.miansen.printer.core.util.PrinterConstants;
 
 /**
- * Printer 配置类
+ * Printer 配置类，各个选项已经赋予了默认值，可以根据具体的需求重新修改。
  * 
  * @author miansen.wang
  * @date 2020-03-20
@@ -47,10 +47,20 @@ public class Configuration {
 	 */
 	private String dateFormat = PrinterConstants.DEFAULT_DATE_FORMAT;
 
+	/**
+	 * 获取是否开启隐射映射
+	 * 
+	 * @return boolean
+	 */
 	public boolean getWildcard() {
 		return wildcard;
 	}
 
+	/**
+	 * 设置是否开启隐射映射
+	 * 
+	 * @param wildcard boolean
+	 */
 	public void setWildcard(boolean wildcard) {
 		this.wildcard = wildcard;
 	}

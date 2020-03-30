@@ -49,7 +49,7 @@ public interface IntrospectionContext {
 	 * 
 	 * @return 属性描述符数组
 	 */
-	PropertyDescriptor[] getPropertyDescriptor();
+	PropertyDescriptor[] getPropertyDescriptors();
 
 	/**
 	 * 删除指定名称的属性描述符。

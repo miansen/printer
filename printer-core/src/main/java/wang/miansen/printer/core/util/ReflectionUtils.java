@@ -21,6 +21,10 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import wang.miansen.printer.core.beans.DefaultIntrospectionContext;
+import wang.miansen.printer.core.beans.JavaBeanIntrospector;
+import wang.miansen.printer.core.beans.PrinterIntrospector;
+
 /**
  * 反射工具类
  * 
@@ -30,6 +34,8 @@ import org.slf4j.LoggerFactory;
 public abstract class ReflectionUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+	
+	private static final PrinterIntrospector introspector = JavaBeanIntrospector.instance();
 	
 	private static final Map<Class<?>, PropertyDescriptor[]> DESCRIPTORS_CACHE = new ConcurrentHashMap<>();
 
@@ -170,11 +176,12 @@ public abstract class ReflectionUtils {
 		if (clazz == null) {
             throw new IllegalArgumentException("No bean class specified");
         }
-		PropertyDescriptor[] propertyDescriptors = DESCRIPTORS_CACHE.get(clazz);
-		if (propertyDescriptors == null) {
-			
+		PropertyDescriptor[] descriptors = DESCRIPTORS_CACHE.get(clazz);
+		if (descriptors == null) {
+			descriptors = fetchPropertyDescriptors(clazz);
+			DESCRIPTORS_CACHE.put(clazz, descriptors);
 		}
-		return propertyDescriptors;
+		return descriptors;
 	}
 
 	/**
@@ -204,6 +211,16 @@ public abstract class ReflectionUtils {
 			propertyDescriptors[index++] = propertyDescriptor;
 		}
 		return propertyDescriptors;
+	}
+	
+	private static PropertyDescriptor[] fetchPropertyDescriptors(Class<?> clazz) {
+		final DefaultIntrospectionContext context = new DefaultIntrospectionContext(clazz);
+		try {
+			introspector.introspect(context);
+		} catch (IntrospectionException e) {
+			logger.error("Exception during introspection", e);
+		}
+		return context.getPropertyDescriptors();
 	}
 	
 }
