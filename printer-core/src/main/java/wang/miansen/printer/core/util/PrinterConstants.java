@@ -49,4 +49,6 @@ public interface PrinterConstants {
 	 */
 	String DEEP_FIELD_DELIMITER = ".";
 	
+	String CGLIB_CLASS_SEPARATOR = "$$EnhancerByCGLIB$$";  
+	
 }

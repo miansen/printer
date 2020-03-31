@@ -1,20 +1,30 @@
 package wang.miansen.printer.core.director;
 
+import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wang.miansen.printer.core.Configuration;
 import wang.miansen.printer.core.FieldMappingOption;
 import wang.miansen.printer.core.MappingContext;
 import wang.miansen.printer.core.PrinterBeanMapperBuilder;
+import wang.miansen.printer.core.beans.DefaultIntrospectionContext;
+import wang.miansen.printer.core.beans.IntrospectionContext;
+import wang.miansen.printer.core.beans.JavaBeanIntrospector;
+import wang.miansen.printer.core.beans.PrinterIntrospector;
 import wang.miansen.printer.core.beans.PrinterPropertyDescriptorFactory;
-import wang.miansen.printer.core.director.FieldMapBuildDirector.FieldMapBuilder;
 import wang.miansen.printer.core.map.ClassMap;
 import wang.miansen.printer.core.map.CustomClassMap;
 import wang.miansen.printer.core.map.DefaultClassMap;
 import wang.miansen.printer.core.map.FieldMap;
 import wang.miansen.printer.core.metadata.PrinterClass;
 import wang.miansen.printer.core.metadata.PrinterClassBuilder;
+import wang.miansen.printer.core.util.CollectionUtils;
+import wang.miansen.printer.core.util.MappingUtils;
 
 /**
  * 指挥各个建造者创建 {@link ClassMap} 对象
@@ -24,6 +34,8 @@ import wang.miansen.printer.core.metadata.PrinterClassBuilder;
  * @date 2020-03-21
  */
 public final class ClassMapBuildDirector {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ClassMapBuildDirector.class);
 
 	/**
 	 * 来源 Class
@@ -57,19 +69,10 @@ public final class ClassMapBuildDirector {
 	 */
 	private final PrinterPropertyDescriptorFactory propertyDescriptorFactory;
 	
+	private final PrinterIntrospector introspector;
+	
 	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, MappingContext mappingContext) {
 		this(sourceClass, targetClass, mappingContext, null);
-	}
-
-	/**
-	 * 创建指挥者的实例对象
-	 * 
-	 * @param sourceClass 来源 Class
-	 * @param targetClass 目标 Class
-	 * @param printerBeanMapperBuilder bean 映射构建器
-	 */
-	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, PrinterBeanMapperBuilder printerBeanMapperBuilder) {
-		this(sourceClass, targetClass, null, printerBeanMapperBuilder);
 	}
 	
 	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, MappingContext mappingContext, 
@@ -80,6 +83,7 @@ public final class ClassMapBuildDirector {
 		this.printerBeanMapperBuilder = printerBeanMapperBuilder;
 		this.fieldMapBuilders = new ArrayList<>();
 		this.propertyDescriptorFactory = new PrinterPropertyDescriptorFactory();
+		this.introspector = JavaBeanIntrospector.instance();
 	}
 
 	/**
@@ -119,14 +123,39 @@ public final class ClassMapBuildDirector {
 	 * @return PrinterBeanMapperBuilder
 	 */
 	public PrinterBeanMapperBuilder ok() {
+		if (loadable()) {
+			// 加载默认字段映射
+			loadDefaultFieldMap();
+		}
 		for (FieldMapBuildDirector.FieldMapBuilder fieldMapBuilder : fieldMapBuilders) {
 			fieldMapBuilder.build();
 		}
-		loadDefaultFieldMap();
 		return printerBeanMapperBuilder;
 	}
 	
 	private void loadDefaultFieldMap() {
+		IntrospectionContext sourceContext = new DefaultIntrospectionContext(sourceClass);
+		IntrospectionContext targetContext = new DefaultIntrospectionContext(targetClass);
+		try {
+			introspector.introspect(sourceContext);
+			introspector.introspect(targetContext);
+		} catch (IntrospectionException e) {
+			logger.error("Error when load default field map. class: " + targetClass, e);
+			return;
+		}
+		Set<String> propertyNames = CollectionUtils.intersection(sourceContext.propertyNames(), 
+				targetContext.propertyNames());
+		for (String propertyName : propertyNames) {
+			if (MappingUtils.shouldIgnoreField(propertyName, sourceClass, targetClass)) {
+				continue;
+			}
+			FieldMapBuildDirector fiBuilderDirector = new FieldMapBuildDirector(propertyName, propertyName, classMap, propertyDescriptorFactory);
+			FieldMapBuildDirector.FieldMapBuilder defaultFieldMapBuilder = fiBuilderDirector.default_();
+			fieldMapBuilders.add(defaultFieldMapBuilder);
+		}
+	}
+
+	private boolean loadable() {
 		boolean loadable = false;
 		if (classMap instanceof CustomClassMap) {
 			CustomClassMap customClassMap = (CustomClassMap) classMap;
@@ -136,9 +165,7 @@ public final class ClassMapBuildDirector {
 			Configuration globalConfiguration = mappingContext.getGlobalConfiguration();
 			loadable = globalConfiguration.getWildcard();
 		}
-		if (loadable) {
-			// TODO
-		}
+		return loadable;
 	}
 
 	/**

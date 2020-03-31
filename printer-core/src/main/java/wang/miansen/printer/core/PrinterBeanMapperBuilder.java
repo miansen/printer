@@ -20,7 +20,7 @@ public class PrinterBeanMapperBuilder {
 	}
 
 	public ClassMapBuildDirector mapping(Class<?> source, Class<?> target, ClassMappingOption... classMappingOptions) {
-		ClassMapBuildDirector classMapBuildDirector = new ClassMapBuildDirector(source, target, this);
+		ClassMapBuildDirector classMapBuildDirector = new ClassMapBuildDirector(source, target, mappingContext, this);
 		ClassMapBuildDirector.ClassMapBuilder customClassMapBuilder = classMapBuildDirector.custom();
 		for (ClassMappingOption classMappingOption : classMappingOptions) {
 			classMappingOption.apply(customClassMapBuilder);

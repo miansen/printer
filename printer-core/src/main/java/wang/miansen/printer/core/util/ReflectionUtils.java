@@ -23,7 +23,10 @@ import org.slf4j.LoggerFactory;
 
 import wang.miansen.printer.core.beans.DefaultIntrospectionContext;
 import wang.miansen.printer.core.beans.JavaBeanIntrospector;
+import wang.miansen.printer.core.beans.JavaBeanPropertyDescriptor;
 import wang.miansen.printer.core.beans.PrinterIntrospector;
+import wang.miansen.printer.core.entity.Student;
+import wang.miansen.printer.core.metadata.PrinterClass;
 
 /**
  * 反射工具类
@@ -221,6 +224,15 @@ public abstract class ReflectionUtils {
 			logger.error("Exception during introspection", e);
 		}
 		return context.getPropertyDescriptors();
+	}
+	
+	public static void main(String[] args) {
+		PropertyDescriptor[] descriptors = getPropertyDescriptors(JavaBeanPropertyDescriptor.class);
+		for (PropertyDescriptor propertyDescriptor : descriptors) {
+			Method readMethod = propertyDescriptor.getReadMethod();
+			Method writeMethod = propertyDescriptor.getWriteMethod();
+		}
+		PropertyDescriptor[] descriptors2 = getPropertyDescriptors(PrinterClass.class);
 	}
 	
 }
