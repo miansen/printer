@@ -33,4 +33,20 @@ public interface ClassMap {
 	 */
 	List<FieldMap> getFieldMaps();
 	
+	/**
+	 * 根据输入的来源字段名称获取相应的字段映射
+	 * 
+	 * @param sourceFieldName 来源字段名称
+	 * @return FieldMap
+	 */
+	FieldMap getFieldMapBySourceFieldName(String sourceFieldName);
+	
+	/**
+	 * 根据输入的目标字段名称获取相应的字段映射
+	 * 
+	 * @param targetFieldName 目标字段名称
+	 * @return FieldMap
+	 */
+	FieldMap getFieldMapByTargetFieldName(String targetFieldName);
+	
 }

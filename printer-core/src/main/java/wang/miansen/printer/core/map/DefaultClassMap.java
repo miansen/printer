@@ -18,7 +18,7 @@ public class DefaultClassMap extends AbstractClassMap {
 
 	@Override
 	public String toString() {
-		return "DefaultClassMap {getSourceClass()=" + getSourceClass() + ", getTargetClass()=" + getTargetClass() + "}";
+		return "DefaultClassMap {sourceClass=" + getSourceClass() + ", targetClass=" + getTargetClass() + "}";
 	}
 
 }

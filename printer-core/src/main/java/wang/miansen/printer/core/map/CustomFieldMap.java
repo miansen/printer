@@ -30,7 +30,7 @@ public class CustomFieldMap extends AbstractFieldMap {
 
 	@Override
 	public String toString() {
-		return "CustomFieldMap {getSourceField()=" + getSourceField() + ", getTargetField()=" + getTargetField() + "}";
+		return "CustomFieldMap {sourceField=" + getSourceField() + ", targetField=" + getTargetField() + "}";
 	}
 
 }

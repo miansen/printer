@@ -32,7 +32,7 @@ public class CustomClassMap extends AbstractClassMap {
 
 	@Override
 	public String toString() {
-		return "CustomClassMap {getSourceClass()=" + getSourceClass() + ", getTargetClass()=" + getTargetClass() + "}";
+		return "CustomClassMap {sourceClass=" + getSourceClass() + ", targetClass=" + getTargetClass() + "}";
 	}
 
 }

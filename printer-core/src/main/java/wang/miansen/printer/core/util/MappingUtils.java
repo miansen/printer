@@ -62,7 +62,7 @@ public abstract class MappingUtils {
 	}
 	
 	/**
-	 * 映射是应该被过滤的字段
+	 * 应该被过滤的字段
 	 * 
 	 * @param fieldName 字段的名称
 	 * @param sourceClass 来源类

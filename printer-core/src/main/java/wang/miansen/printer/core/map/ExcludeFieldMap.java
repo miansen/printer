@@ -16,7 +16,7 @@ public class ExcludeFieldMap extends AbstractFieldMap {
 
 	@Override
 	public String toString() {
-		return "ExcludeFieldMap {getSourceField()=" + getSourceField() + ", getTargetField()=" + getTargetField() + "}";
+		return "ExcludeFieldMap {excludeField=" + getSourceField() + "}";
 	}
 
 }

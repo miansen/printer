@@ -16,7 +16,7 @@ public class DefaultFieldMap extends AbstractFieldMap {
 
 	@Override
 	public String toString() {
-		return "DefaultFieldMap {getSourceField()=" + getSourceField() + ", getTargetField()=" + getTargetField() + "}";
+		return "DefaultFieldMap {sourceField=" + getSourceField() + ", targetField=" + getTargetField() + "}";
 	}
 
 }

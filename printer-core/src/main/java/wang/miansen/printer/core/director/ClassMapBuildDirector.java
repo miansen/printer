@@ -27,8 +27,12 @@ import wang.miansen.printer.core.util.CollectionUtils;
 import wang.miansen.printer.core.util.MappingUtils;
 
 /**
- * 指挥各个建造者创建 {@link ClassMap} 对象
- * <p>请根据实际的情况，选择合适的建造者 -> {@link #default_()} | {@link #custom()}
+ * 此类用来生成各个类映射建造者，从而指挥各个建造者创建 {@link ClassMap} 对象
+ * <p>请根据实际的情况，选择合适的建造者：
+ * <ul>
+ * <li>{@link #default_()}：构建默认的类映射的建造者</li>
+ * <li>{@link #custom()}：构建自定义的类映射的建造者</li>
+ * </ul>
  * 
  * @author miansen.wang
  * @date 2020-03-21
@@ -87,7 +91,7 @@ public final class ClassMapBuildDirector {
 	}
 
 	/**
-	 * 指定字段的映射关系
+	 * 自定义字段映射
 	 * 
 	 * @param source 来源字段的名字
 	 * @param target 目标字段的名字
@@ -118,21 +122,26 @@ public final class ClassMapBuildDirector {
 	}
 
 	/**
-	 * 构建完成，继续下一步
+	 * 执行字段映射，以便完成整个类映射。
 	 * 
 	 * @return PrinterBeanMapperBuilder
 	 */
 	public PrinterBeanMapperBuilder ok() {
 		if (loadable()) {
-			// 加载默认字段映射
+			// 加载默认的字段映射建造者
 			loadDefaultFieldMap();
 		}
 		for (FieldMapBuildDirector.FieldMapBuilder fieldMapBuilder : fieldMapBuilders) {
-			fieldMapBuilder.build();
+			if (fieldMapBuilder.accept()) {
+				fieldMapBuilder.build();
+			}
 		}
 		return printerBeanMapperBuilder;
 	}
 	
+	/**
+	 * 加载默认的字段映射建造者
+	 */
 	private void loadDefaultFieldMap() {
 		IntrospectionContext sourceContext = new DefaultIntrospectionContext(sourceClass);
 		IntrospectionContext targetContext = new DefaultIntrospectionContext(targetClass);
@@ -155,6 +164,11 @@ public final class ClassMapBuildDirector {
 		}
 	}
 
+	/**
+	 * 判断是否可以加载默认的字段映射建造者
+	 * 
+	 * @return boolean
+	 */
 	private boolean loadable() {
 		boolean loadable = false;
 		if (classMap instanceof CustomClassMap) {

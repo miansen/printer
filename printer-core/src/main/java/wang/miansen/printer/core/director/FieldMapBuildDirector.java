@@ -14,8 +14,13 @@ import wang.miansen.printer.core.metadata.PrinterField;
 import wang.miansen.printer.core.metadata.PrinterFieldBuilder;
 
 /**
- * 指挥各个建造者创建 {@link FieldMap} 对象
- * <p>请根据实际的情况，选择合适的建造者 -> {@link #default_()} | {@link #custom()} | {@link #exclude()}
+ * 此类用来生成各个字段映射建造者，从而指挥各个建造者创建 {@link FieldMap} 对象
+ * <p>请根据实际的情况，选择合适的建造者：
+ * <ul>
+ * <li>{@link #default_()}：创建默认的字段映射的建造者</li>
+ * <li>{@link #custom()}：创建自定义字段映射的建造者</li>
+ * <li>{@link #exclude()}：创建排除字段映射的建造者</li>
+ * </ul>
  * 
  * @author miansen.wang
  * @date 2020-03-23
@@ -90,16 +95,38 @@ public final class FieldMapBuildDirector {
 	public interface FieldMapBuilder {
 		
 		/**
+		 * 此方法用来判断是否可以构建字段映射。
+		 * <p>调用 {@code build()} 方法执行之前应该先调用此方法，以此来判断是否可以构建字段映射。
+		 * <p>如果不先调用此方法而直接调用 {@code build()} 方法，可能会造成字段重复映射。
+		 * 
+		 * @return boolean 返回 true 说明可以构建字段映射
+		 */
+		boolean accept();
+		
+		/**
 		 * 构建字段映射
 		 */
 		void build();
 		
 	}
 	
+	public abstract class AbstractFieldMapBuilder implements FieldMapBuilder {
+		
+		@Override
+		public boolean accept() {
+			if (classMap.getFieldMapBySourceFieldName(sourceFieldName) != null 
+					|| classMap.getFieldMapByTargetFieldName(targetFieldName) != null) {
+				return false;
+			}
+			return true;
+		}
+		
+	}
+	
 	/**
 	 * 默认的字段映射建造者
 	 */
-	public final class DefaultFieldMapBuilder implements FieldMapBuilder {
+	public class DefaultFieldMapBuilder extends AbstractFieldMapBuilder {
 		
 		DefaultFieldMapBuilder() {
 			
@@ -117,13 +144,12 @@ public final class FieldMapBuildDirector {
 			FieldMap fieldMap = new DefaultFieldMap(sourceField, targetField, classMap);
 			fieldMaps.add(fieldMap);
 		}
-		
 	}
 	
 	/**
 	 * 自定义字段映射建造者
 	 */
-	public final class CustomFieldMapBuilder implements FieldMapBuilder {
+	public class CustomFieldMapBuilder extends AbstractFieldMapBuilder {
 		
 		CustomFieldMapBuilder() {
 			
@@ -155,13 +181,12 @@ public final class FieldMapBuildDirector {
 		public void setFieldConfiguration(Configuration fieldConfiguration) {
 			this.fieldConfiguration = fieldConfiguration;
 		}
-		
 	}
 	
 	/**
 	 * 排除字段映射建造者
 	 */
-	public final class ExcludeFieldMapBuilder implements FieldMapBuilder {
+	public class ExcludeFieldMapBuilder extends AbstractFieldMapBuilder {
 		
 		ExcludeFieldMapBuilder() {
 			
@@ -176,7 +201,6 @@ public final class FieldMapBuildDirector {
 			FieldMap excludeFieldMap = new ExcludeFieldMap(excludeField, classMap);
 			fieldMaps.add(excludeFieldMap);
 		}
-		
 	}
 	
 }
