@@ -20,11 +20,13 @@ import org.slf4j.LoggerFactory;
 public class JavaBeanIntrospector implements PrinterIntrospector {
 
 	private static final Logger logger = LoggerFactory.getLogger(JavaBeanIntrospector.class);
+	
+	private static final Object LOCK = new Object();
 
 	/**
 	 * 此类的单例实例
 	 */
-	private static JavaBeanIntrospector javaBeanIntrospector;
+	private static volatile JavaBeanIntrospector javaBeanIntrospector;
 
 	/**
 	 * 私有构造函数，因此无法创建任何实例。请通过 {@link #instance()} 方法获取此类的实例。
@@ -40,7 +42,11 @@ public class JavaBeanIntrospector implements PrinterIntrospector {
 	 */
 	public static JavaBeanIntrospector instance() {
 		if (javaBeanIntrospector == null) {
-			javaBeanIntrospector = new JavaBeanIntrospector();
+			synchronized (LOCK) {
+				if (javaBeanIntrospector == null) {
+					javaBeanIntrospector = new JavaBeanIntrospector();
+				}
+			}
 		}
 		return javaBeanIntrospector;
 	}
