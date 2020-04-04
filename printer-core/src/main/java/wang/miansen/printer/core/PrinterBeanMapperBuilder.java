@@ -9,10 +9,10 @@ import wang.miansen.printer.core.map.ClassMap;
  */
 public class PrinterBeanMapperBuilder {
 
-	private MappingContext mappingContext;
+	private DefaultMappingContext mappingContext;
 	
 	private PrinterBeanMapperBuilder() {
-		mappingContext = new MappingContext();
+		mappingContext = new DefaultMappingContext();
 	}
 
 	public static PrinterBeanMapperBuilder create() {

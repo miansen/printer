@@ -6,9 +6,9 @@ package wang.miansen.printer.core;
  */
 public class PrinterBeanMapper implements Mapper {
 
-	private MappingContext mappingContext;
+	private DefaultMappingContext mappingContext;
 	
-	PrinterBeanMapper(MappingContext mappingContext) {
+	PrinterBeanMapper(DefaultMappingContext mappingContext) {
 		this.mappingContext = mappingContext;
 	}
 

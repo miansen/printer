@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import wang.miansen.printer.core.Configuration;
 import wang.miansen.printer.core.FieldMappingOption;
-import wang.miansen.printer.core.MappingContext;
+import wang.miansen.printer.core.DefaultMappingContext;
 import wang.miansen.printer.core.PrinterBeanMapperBuilder;
 import wang.miansen.printer.core.beans.DefaultIntrospectionContext;
 import wang.miansen.printer.core.beans.IntrospectionContext;
@@ -56,7 +56,7 @@ public final class ClassMapBuildDirector {
 	 */
 	private ClassMap classMap;
 	
-	private final MappingContext mappingContext;
+	private final DefaultMappingContext mappingContext;
 	
 	/**
 	 * bean 映射构建器
@@ -75,11 +75,11 @@ public final class ClassMapBuildDirector {
 	
 	private final PrinterIntrospector introspector;
 	
-	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, MappingContext mappingContext) {
+	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, DefaultMappingContext mappingContext) {
 		this(sourceClass, targetClass, mappingContext, null);
 	}
 	
-	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, MappingContext mappingContext, 
+	public ClassMapBuildDirector(Class<?> sourceClass, Class<?> targetClass, DefaultMappingContext mappingContext, 
 			PrinterBeanMapperBuilder printerBeanMapperBuilder) {
 		this.sourceClass = sourceClass;
 		this.targetClass = targetClass;
