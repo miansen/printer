@@ -16,14 +16,14 @@ public class AppTest {
 	public void test01() throws Exception {
 		Mapper mapper = PrinterBeanMapperBuilder.create()
 								.mapping(Student.class, StudentDTO.class, ClassMappingOptions.wildcard(false))
-								.field("name", "name", FieldMappingOptions.copyByReferences(true), 
+								.field("dog.name", "name", FieldMappingOptions.copyByReferences(true), 
 										FieldMappingOptions.mapEmptyString(false))
 								.field("age", "age")
 								.ok()
-								.mapping(Student.class, StudentDTO.class)
+								/*.mapping(Student.class, StudentDTO.class)
 								.field("mobile", "mobile")
 								.field("dog.name", "name")
-								.ok()
+								.ok()*/
 								.build();
 	}
 	
@@ -35,6 +35,23 @@ public class AppTest {
 		student.setDog(dog);
 		PropertyDescriptor propertyDescriptor = ReflectionUtils.getPropertyDescriptor(student.getClass(), "dog.name");
 		System.out.println(propertyDescriptor);
+	}
+	
+	@Test
+	public void test03() throws Exception {
+		Class<Integer> clazz = Integer.class;
+		Class clzz2 = int.class;
+		Class clazz3 = Integer.TYPE;
+		Integer cast = clazz.cast(1);
+		Integer cast4 = clazz.cast(1);
+		Integer cast5 = clazz.cast(2);
+		// int cast3 = (int) clazz3.cast(1);
+		// Object cast2 = clzz2.cast(1);
+		Class<Dog> dogClass = Dog.class;
+		Dog dog1 = new Dog();
+		Dog dog2 = dogClass.cast(dog1);
+		Dog dog3 = dogClass.cast(null);
+		
 	}
 	
 }
