@@ -45,19 +45,26 @@ public abstract class AbstractConverter implements Converter {
 		if (defaultValue == null && type == null) {
 			throw new ConversionException(String.format("[type] and [defaultValue] are both null for Converter [{}], we can not know what type to convert !", this.getClass().getName()));
 		}
-		Class<?> sourceClass = value == null ? null : value.getClass();
-		Class<T> targetClass = ConvertUtils.primitiveToWrapper(type);
-		if (targetClass == null) {
-			targetClass = (Class<T>) defaultValue.getClass();
+		Class<?> sourceType = value == null ? null : value.getClass();
+		Class<T> targetType = ConvertUtils.primitiveToWrapper(type);
+		if (targetType == null) {
+			targetType = (Class<T>) defaultValue.getClass();
 		}
-		if (value == null && !targetClass.isInstance(defaultValue)) {
-			throw new ConversionException(String.format("Default value [{}] is not the instance of [{}]", defaultValue, targetClass));
+		if (value == null && !targetType.isInstance(defaultValue)) {
+			throw new ConversionException(String.format("Default value [{}] is not the instance of [{}]", defaultValue, targetType));
 		}
-		if (sourceClass == targetClass) {
-			return targetClass.cast(value);
+		if (value == null) {
+			return targetType.cast(defaultValue);
+		}
+		if (value != null && sourceType == targetType) {
+			return targetType.cast(value);
 		}
 		return convertProcess(value, type);
 	}
+	
+	protected String convertToString(final Object value) throws Throwable {
+        return value.toString();
+    }
 
 	/**
 	 * 具体的转换逻辑，由子类实现。
@@ -68,6 +75,8 @@ public abstract class AbstractConverter implements Converter {
 	 * @throws ConversionException 如果转换发生错误并且默认值为 {@code null}，则抛出此异常。
 	 */
 	protected abstract <T> T convertProcess(Object value, Class<T> type) throws ConversionException;
+	
+	protected abstract Class<?> getTargetType();
 	
 	protected boolean getUseDefault() {
 		return useDefault;
