@@ -54,4 +54,20 @@ public class AppTest {
 		
 	}
 	
+	@Test
+	public void test04() throws Exception {
+		Dog dog1 = new Dog();
+		Object[] strings = new Object[]{"a", 1, dog1};
+		Class<? extends Object[]> class1 = strings.getClass();
+		Class<?> componentType = class1.getComponentType();
+		
+		Integer i1 = new Integer(1);
+		Integer i2 = new Integer(1);
+		Integer i3 = new Integer(1234567);
+		
+		System.out.println(i1 == i2);
+		
+		System.out.println(i3.byteValue());
+	}
+	
 }

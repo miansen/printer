@@ -62,7 +62,10 @@ public abstract class AbstractConverter implements Converter {
 		return convertProcess(value, type);
 	}
 	
-	protected String convertToString(final Object value) throws Throwable {
+	protected String convertToString(final Object value) {
+		if (value == null) {
+			return null;
+		}
         return value.toString();
     }
 
