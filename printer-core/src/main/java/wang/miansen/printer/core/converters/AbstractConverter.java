@@ -12,11 +12,6 @@ import wang.miansen.printer.core.util.ConvertUtils;
 public abstract class AbstractConverter implements Converter {
 	
 	/**
-	 * 转换发生错误时，是否应该启用默认值
-	 */
-	private boolean useDefault = false;
-	
-	/**
 	 * 指定转换的默认值
 	 */
 	private Object defaultValue = null;
@@ -59,9 +54,24 @@ public abstract class AbstractConverter implements Converter {
 		if (value != null && sourceType == targetType) {
 			return targetType.cast(value);
 		}
-		return convertProcess(value, type);
+		try {
+			return convertProcess(value, type);
+		} catch (Exception e) {
+			if (defaultValue != null) {
+				return (T) defaultValue;
+			} else {
+				throw e;
+			}
+		}
 	}
 	
+	/**
+	 * 将输入的对象转换为字符串。
+	 * <p>该方法只是简单的返回 {@code toString()}，如果需要更复杂的转换机制，子类应该重写此方法。
+	 * 
+	 * @param value 要转换的输入值。
+	 * @return 如果输入对象为空，那么将返回 {@code null}。否则，返回输入对象的 {@code toString()} 方法。
+	 */
 	protected String convertToString(final Object value) {
 		if (value == null) {
 			return null;
@@ -79,18 +89,28 @@ public abstract class AbstractConverter implements Converter {
 	 */
 	protected abstract <T> T convertProcess(Object value, Class<T> type) throws ConversionException;
 	
+	/**
+	 * 获取目标类型，由子类实现。
+	 * 
+	 * @return 目标类型
+	 */
 	protected abstract Class<?> getTargetType();
 	
-	protected boolean getUseDefault() {
-		return useDefault;
-	}
-
+	/**
+	 * 获取默认值
+	 * 
+	 * @return 默认值
+	 */
 	protected Object getDefaultValue() {
 		return defaultValue;
 	}
 
+	/**
+	 * 设置默认值
+	 * 
+	 * @param defaultValue 默认值
+	 */
 	protected void setDefaultValue(Object defaultValue) {
-		this.useDefault = true;
 		this.defaultValue = defaultValue;
 	}
 

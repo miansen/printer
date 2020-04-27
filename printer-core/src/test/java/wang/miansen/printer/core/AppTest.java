@@ -4,6 +4,7 @@ import java.beans.PropertyDescriptor;
 
 import org.junit.Test;
 
+import wang.miansen.printer.core.converters.IntegerConverter;
 import wang.miansen.printer.core.dto.StudentDTO;
 import wang.miansen.printer.core.entity.Dog;
 import wang.miansen.printer.core.entity.Student;
@@ -68,6 +69,47 @@ public class AppTest {
 		System.out.println(i1 == i2);
 		
 		System.out.println(i3.byteValue());
+	}
+	
+	@Test
+	public void test05() throws Exception {
+		double minValue = Double.MIN_VALUE;
+		double maxValue = Double.MAX_VALUE;
+		long minValue2 = Long.MIN_VALUE;
+		long maxValue2 = Long.MAX_VALUE;
+		float f1 = (float) minValue;
+		float f2 = (float) maxValue;
+		int i1 = (int) minValue2;
+		int i2 = (int) maxValue2;
+		Float minFloat = new Float(minValue);
+		Float maxFloat = new Float(maxValue);
+		System.out.println(minValue);
+		System.out.println(maxValue);
+		System.out.println(minFloat.floatValue());
+		System.out.println(maxFloat.floatValue());
+		Integer i3 = 0;
+		double doubleValue = i3.doubleValue();
+		float floatValue = i3.floatValue();
+	}
+	
+	@Test
+	public void test06() throws Exception {
+		Long long0 = 123L;
+		Long long1 = new Long(123L);
+		Long long2 = Long.valueOf(123L);
+		
+		//String string = "abc";
+		String string1 = new String("abc");
+		String string2 = String.valueOf("abc");
+		String string3 = String.valueOf("abc");
+		String string4 = "abc";
+	}
+	
+	@Test
+	public void test07() throws Exception {
+		IntegerConverter integerConverter = new IntegerConverter("123a");
+		Object integer = integerConverter.convert("123a", Object.class);
+		
 	}
 	
 }
