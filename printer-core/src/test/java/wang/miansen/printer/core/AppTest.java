@@ -112,4 +112,31 @@ public class AppTest {
 		
 	}
 	
+	@Test
+	public void test08() throws Exception {
+		System.out.println(Float.POSITIVE_INFINITY + 10000);
+		System.out.println(Float.POSITIVE_INFINITY - 10000);
+		System.out.println(Float.POSITIVE_INFINITY * 10000);
+		System.out.println(Float.POSITIVE_INFINITY / 10000);
+		
+		System.out.println(Float.NEGATIVE_INFINITY + 10000);
+		System.out.println(Float.NEGATIVE_INFINITY - 10000);
+		System.out.println(Float.NEGATIVE_INFINITY * 10000);
+		System.out.println(Float.NEGATIVE_INFINITY / 10000);
+		
+		System.out.println(Float.isInfinite(Float.POSITIVE_INFINITY));
+		System.out.println(Float.isInfinite(Float.NEGATIVE_INFINITY));
+		
+		System.out.println(Float.isNaN(Float.NaN)); // output: false
+		System.out.println(Double.isNaN(Double.NaN)); // output: true
+		
+		System.out.println(Float.NaN == Float.NaN);
+		System.out.println(Double.NaN == Double.NaN);
+	}
+	
+	@Test
+	public void test09() throws Exception {
+		
+	}
+	
 }
